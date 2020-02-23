@@ -1,0 +1,49 @@
+# Source GTI, Background GTI
+# Region
+# Finding code simplification ##
+# Re-bin specification
+# Only fit model result output as a text? can I? I don't know
+# ps2pdf must be included in the plot part in every part
+
+xselect
+SUZAKU_TEST
+read event
+/Users/changhyun/suzaku/research/data/406076010/xis/event_cl
+ae406076010xi0_0_3x3n090l_cl.evt.gz ae406076010xi0_0_5x5n090l_cl.evt.gz
+set xyname DETX DETY
+filter region center.reg
+set binsize 8
+extract all
+filter time cursor
+
+q
+x
+
+save time cursor burst_
+save time cursor back_burst_
+show filter
+exit
+no
+
+
+rescale x 196500 198000
+rescale x 215000 215700
+
+When you set the time of the burst, please write it down somewhere to check it later for your convenience.
+
+
+xspec
+data 1:1 xis0.pha 2:2 xis1.pha 3:3 xis3.pha
+resp 1 xis0.rmf 2 xis1.rmf 3 xis3.rmf
+arf 1 xis0.arf 2 xis1.arf 3 xis3.arf
+backgrnd 1:1 back_xis0.pha 2:2 back_xis1.pha 3:3 back_xis3.pha
+setplot energy
+ignore 1-3: **-1.0 1.7-2.0 12.0-**
+statistic cstat
+plot ldata ratio
+
+_rebin
+_rebin
+_rebin
+also, what should I remove to get accurate spectra?
+gold and something band.
