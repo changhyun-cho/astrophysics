@@ -14,7 +14,6 @@ for BURST in 0 1 2 3 4 5 6 7 8; do #0 1 2 3 4 5 6 7 8
 data xis${INST}_rebin.pha
 resp xis${INST}.rmf
 arf xis${INST}.arf
-backgrnd back_xis${INST}_rebin.pha
 setplot energy
 ignore 1-3: **-1.0 12.0-**
 statistic chi
