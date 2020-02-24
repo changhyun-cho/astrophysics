@@ -15,16 +15,15 @@ data xis${INST}_rebin.pha
 resp xis${INST}.rmf
 arf xis${INST}.arf
 setplot energy
-ignore 1-3: **-1.0 12.0-**
+ignore **-1.0 12.0-**
 statistic chi
-model wabs*bbodyrad
+model tbabs*bbody
 
 
-
+5.0
 que no; fit ; renorm ; fit ; renorm ; fit ; renorm ; fit ; renorm ; fit
 cpd /xs
 iplot ldata ratio
-rescale y 0.01 5
 label top XIS$INST Specturm of the burst $BURST
 hardcopy burst_${BURST}_xis${INST}_spec.ps/cps
 quit
@@ -40,3 +39,5 @@ EOF
 done
 
 exit 0
+
+#rescale y 0.01 5

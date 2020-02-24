@@ -8,30 +8,29 @@ for BURST in 0 1 2 3 4 5 6 7 8; do #0 1 2 3 4 5 6 7 8
 
 	for INST in 0 1 3; do
 
-		rm $SPEC_DIR/$BURST/burst_${INST}.xcm
+		rm $SPEC_DIR/$BURST/back_burst_${INST}.xcm
 
 		$XSPEC <<EOF
 data back_xis${INST}_rebin.pha
 resp xis${INST}.rmf
 arf xis${INST}.arf
 setplot energy
-ignore 1-3: **-1.0 12.0-**
+ignore **-1.0 12.0-**
 statistic chi
-model wabs*bbodyrad
+model tbabs*bbody
 
 
-
+5.0
 que no; fit ; renorm ; fit ; renorm ; fit ; renorm ; fit ; renorm ; fit
 cpd /xs
 iplot ldata ratio
-rescale y 0.01 5
 label top XIS$INST Specturm of the burst $BURST
-hardcopy burst_${BURST}_xis${INST}_spec.ps/cps
+hardcopy back_burst_${BURST}_xis${INST}_spec.ps/cps
 quit
-save all burst_${INST}
+save all back_burst_${INST}
 EOF
 
-	$PS2PDF burst_${BURST}_xis${INST}_spec.ps
+	$PS2PDF back_burst_${BURST}_xis${INST}_spec.ps
 
 	done
 
@@ -40,3 +39,5 @@ EOF
 done
 
 exit 0
+
+#rescale y 0.01 5
