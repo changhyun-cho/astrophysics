@@ -8,6 +8,8 @@ for BURST in 0 1 2 3 4 5 6 7 8; do #0 1 2 3 4 5 6 7 8
 
 	for INST in 0 1 3; do
 
+		rm $SPEC_DIR/$BURST/burst_${INST}.xcm
+
 		$XSPEC <<EOF
 data xis${INST}_rebin.pha
 resp xis${INST}.rmf
