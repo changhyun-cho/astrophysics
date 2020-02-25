@@ -64,7 +64,8 @@ HArdcopy burst_${BURST}_xis0_lc.ps/ps
 q
 EOF
 
-	cp $CURVE_DIR/$BURST/*.ps $RESULT_DIR/$BURST
+	$PS2PDF burst_${BURST}_xis0_lc.ps
+	cp $CURVE_DIR/$BURST/*.pdf $RESULT_DIR/$BURST
 
 done
 
