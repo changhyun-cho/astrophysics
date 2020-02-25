@@ -17,7 +17,7 @@ arf xis${INST}.arf
 setplot energy
 ignore **-1.0 12.0-**
 statistic chi
-model tbabs*bbody
+model wabs*bbody
 
 
 5.0
