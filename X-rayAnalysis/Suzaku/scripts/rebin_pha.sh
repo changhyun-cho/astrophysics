@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /Users/changhyun/suzaku/research/proc/scripts/env_SUZAKU.sh
+source /Users/changhyun/GitHub/astrophysics/X-rayAnalysis/Suzaku/scripts/env_SUZAKU.sh
 
 REBIN="group 0 255 2
 group 256 511 32

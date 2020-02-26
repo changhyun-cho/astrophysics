@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /Users/changhyun/suzaku/research/proc/scripts/env_SUZAKU.sh
+source /Users/changhyun/GitHub/astrophysics/X-rayAnalysis/Suzaku/scripts/env_SUZAKU.sh
 
 for BURST in 0; do #0 1 2 3 4 5 6 7 8
 
@@ -15,28 +15,7 @@ backgrnd 1:1 back_xis0_rebin.pha 2:2 back_xis1_rebin.pha 3:3 back_xis3_rebin.pha
 setplot energy
 ignore 1-3: **-1.0 12.0-**
 statistic chi
-model wabs*compTT
-
-0 -1
-1.13404
-50 -1
-
-2 -1
-1.0
-
-
-
-
-
-
-2.0
-
-
-
-
-
-
-3.0
+$COMPTT
 que no; fit ; renorm ; fit ; renorm ; fit ; renorm ; fit ; renorm ; fit
 
 cpd /xs
