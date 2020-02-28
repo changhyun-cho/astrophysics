@@ -2,25 +2,24 @@
 
 source /Users/changhyun/GitHub/astrophysics/X-rayAnalysis/Suzaku/scripts/env_SUZAKU.sh
 
-for BURST in 0 1 2 3 4 5 6 7 8; do #0 1 2 3 4 5 6 7 8
-	cd $SPEC_DIR/$BURST
+cd $SPEC_DIR/0
 
-	for INST in 0 1 3; do #0 1 3
+for INST in 0 1 3; do #0 1 3
 
-		if [ $INST = 0 ]; then
-			GTI_FILE='ae406076010xi0_0_3x3n090l_cl.evt.gz'
-		elif [ $INST = 1 ]; then
-			GTI_FILE='ae406076010xi1_0_3x3n131b_cl.evt.gz'
-		elif [ $INST = 3 ]; then
-			GTI_FILE='ae406076010xi3_0_3x3n092a_cl.evt.gz'
-		fi
+	if [ $INST = 0 ]; then
+		GTI_FILE='ae406076010xi0_0_3x3n090l_cl.evt.gz'
+	elif [ $INST = 1 ]; then
+		GTI_FILE='ae406076010xi1_0_3x3n131b_cl.evt.gz'
+	elif [ $INST = 3 ]; then
+		GTI_FILE='ae406076010xi3_0_3x3n092a_cl.evt.gz'
+	fi
 
-		$XISRMFGEN <<EOF
-$SPEC_DIR/$BURST/xis${INST}.img
-$SPEC_DIR/$BURST/xis${INST}.rmf
+	$XISRMFGEN <<EOF
+$SPEC_DIR/0/xis${INST}.img
+$SPEC_DIR/0/xis${INST}.rmf
 EOF
 
-		$XISSIMARFGEN <<EOF
+	$XISSIMARFGEN <<EOF
 XIS$INST
 DETXY
 $POS_X
@@ -39,7 +38,7 @@ xis${INST}.rmf
 default
 EOF
 
-		#$XISARFGEN <<EOF
+	#$XISARFGEN <<EOF
 #xis${INST}.pha
 #SKYXY
 #$POS_X
@@ -52,7 +51,11 @@ EOF
 #xis${INST}.rmf
 #EOF
 
-	done
+done
+
+for BURST in 1 2 3 4 5 6 7 8; do
+
+	cp $SPEC_DIR/0/*.arf $SPEC_DIR/$BURST/
 
 done
 
