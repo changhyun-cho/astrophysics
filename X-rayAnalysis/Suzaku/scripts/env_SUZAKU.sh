@@ -4,7 +4,7 @@ TARGET=406076010
 POS_X=500.613
 POS_Y=507.989
 BINSIZE=2
-MODEL=compbb # or compbb
+MODEL='compbb' # compbb compTT
 
 HOME=/Users/changhyun/suzaku/research/proc/$TARGET
 PHA_DIR=$HOME/pha

@@ -2,7 +2,7 @@
 
 source /Users/changhyun/GitHub/astrophysics/X-rayAnalysis/Suzaku/scripts/env_SUZAKU.sh
 
-if [ $MODEL='compTT' ]; then
+if [ "$MODEL" = "compTT" ]; then
 
   MODEL_VAR='model wabs*compTT
 
@@ -27,8 +27,9 @@ if [ $MODEL='compTT' ]; then
 
   3.0
   '
-elif [ $MODEL='compbb' ]; then
-  COMPBB='model wabs*compbb
+elif [ "$MODEL" = "compbb" ]; then
+
+  MODEL_VAR='model wabs*compbb
 
 
   50 -1

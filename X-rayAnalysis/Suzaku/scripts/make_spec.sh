@@ -3,7 +3,9 @@
 source /Users/changhyun/GitHub/astrophysics/X-rayAnalysis/Suzaku/scripts/env_SUZAKU.sh
 source /Users/changhyun/GitHub/astrophysics/X-rayAnalysis/Suzaku/scripts/spec_models.sh
 
-for BURST in 1 2 3 4 5 6 7 8; do #0 1 2 3 4 5 6 7 8
+echo $MODEL_VAR
+
+for BURST in 1; do #0 1 2 3 4 5 6 7 8
 
 	cd $SPEC_DIR/$BURST
 	rm $SPEC_DIR/$BURST/burst_$MODEL.xcm
