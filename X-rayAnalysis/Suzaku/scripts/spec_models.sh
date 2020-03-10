@@ -7,25 +7,25 @@ if [ "$MODEL" = "compTT" ]; then
   MODEL_VAR='model wabs*compTT
 
   0 -1
-  1.13404
+  1.5
   50 -1
 
   2 -1
-  1.0
+  0.1
 
 
 
 
 
 
-  2.0
+  0.2
 
 
 
 
 
 
-  3.0
+  0.3
   '
 elif [ "$MODEL" = "compbb" ]; then
 

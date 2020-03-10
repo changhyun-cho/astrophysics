@@ -22,7 +22,7 @@ $MODEL_VAR
 que no; fit ; renorm ; fit ; renorm ; fit ; renorm ; fit ; renorm ; fit
 cpd /xs
 iplot ldata delchi
-rescale y 0.0008 0.2
+rescale y 0.0005 0.5
 label top Specturm of the burst $BURST using $MODEL fitting model
 hardcopy burst_${BURST}_spec_${MODEL}.ps/cps
 quit
@@ -43,7 +43,7 @@ $MODEL_VAR
 que no; fit ; renorm ; fit ; renorm ; fit ; renorm ; fit ; renorm ; fit
 cpd /xs
 iplot ldata delchi
-rescale y 0.05 7
+rescale y 0.05 10
 label top Specturm of the burst $BURST using $MODEL fitting model
 hardcopy burst_${BURST}_spec_${MODEL}.ps/cps
 quit
@@ -58,3 +58,6 @@ EOF
 done
 
 exit 0
+
+# ignore 1-3: **-1.0 1.7-2.4 12.0-**
+# if [ "$BURST" == "0" ] || [ "$BURST" == "0" ]; then
