@@ -55,6 +55,7 @@ done
 
 for BURST in 1 2 3 4 5 6 7 8; do
 
+	cp $SPEC_DIR/0/*.rmf $SPEC_DIR/$BURST/
 	cp $SPEC_DIR/0/*.arf $SPEC_DIR/$BURST/
 
 done
