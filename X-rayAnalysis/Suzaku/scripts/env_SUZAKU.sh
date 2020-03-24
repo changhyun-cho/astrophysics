@@ -3,8 +3,10 @@
 TARGET=406076010
 POS_X=500.613
 POS_Y=507.989
-BINSIZE=2
-MODEL='compbb' # compbb compTT
+POS_RA=257.2270
+POS_DEC=-44.1020
+BINSIZE=2 #2
+MODEL='compbb' # compbb compTT powerlaw bbodyrad bbody diskbb+bbody
 
 HOME=/Users/changhyun/suzaku/research/proc/$TARGET
 PHA_DIR=$HOME/pha
@@ -24,6 +26,7 @@ HEASOFT=/Users/changhyun/heasoft-6.26.1/x86_64-apple-darwin19.0.0/bin/
 XISSIMARFGEN=$HEASOFT/xissimarfgen
 XISRMFGEN=$HEASOFT/xisrmfgen
 XISARFGEN=$HEASOFT/xisarfgen
+HXDARFGEN=$HEASOFT/hxdarfgen
 GRAPPA=$HEASOFT/grppha
 LCURVE=$HEASOFT/lcurve
 XSELECT=$HEASOFT/xselect
