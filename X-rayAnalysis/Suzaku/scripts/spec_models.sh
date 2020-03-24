@@ -45,6 +45,82 @@ elif [ "$MODEL" = "compbb" ]; then
 
 
   0.03
+
+
+
+
+  0.04
+  '
+
+
+fi
+
+if [ "$MODEL" = "bbody" ]; then
+
+  MODEL_VAR='model wabs*bbody
+
+
+  0.01
+
+
+  0.02
+
+
+  0.03
+  '
+
+fi
+
+if [ "$MODEL" = "powerlaw" ]; then
+
+  MODEL_VAR='model wabs*powerlaw
+
+
+  0.01
+
+
+  0.02
+
+
+  0.03
+  '
+
+fi
+
+if [ "$MODEL" = "bbodyrad" ]; then
+
+  MODEL_VAR='model wabs*bbodyrad
+
+
+  0.01
+
+
+  0.02
+
+
+  0.03
+  '
+
+fi
+
+if [ "$MODEL" = "diskbb+bbody" ]; then
+
+  MODEL_VAR='model wabs*(diskbb+bbody)
+
+
+  0.01
+
+  0.01
+
+
+  0.02
+
+  0.02
+
+
+  0.03
+
+  0.03
   '
 
 fi
