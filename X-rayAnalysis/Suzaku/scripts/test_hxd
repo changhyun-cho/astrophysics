@@ -1,0 +1,40 @@
+xselect
+SUZAKU_TEST
+read event
+/Users/changhyun/suzaku/research/data/406076010/hxd/event_cl
+ae406076010hxd_0_pinno_cl.evt.gz
+set binsize 2
+filter time file burst_1.curs_gti
+extract all
+save all hxd_pin
+exit
+no
+cp hxd_pin.pha ../../spec/1/
+
+
+
+filter region center.reg
+
+
+
+xspec
+data hxd_pin.pha
+resp ae_hxd_pinhxnome9_20100731.rsp
+arf hxd_pin.arf_pin.arf
+backgrnd back_hxd_pin.pha
+setplot energy
+ignore **-12.0 70.0-**
+statistic chi
+model wabs*compbb
+
+
+
+
+
+que no ; fit ; renorm ; fit ; renorm ; fit ; fit ; renorm ; fit
+cpd /xs
+plot ldata delchi
+
+
+
+backgrnd back_hxd_pin.pha

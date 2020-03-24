@@ -12,19 +12,24 @@ read event
 ae406076010xi0_0_3x3n090l_cl.evt.gz ae406076010xi0_0_5x5n090l_cl.evt.gz
 set xyname DETX DETY
 filter region center.reg
-set binsize 8
 extract all
 filter time cursor
-
+rescale x 200000 250000
 q
+
 x
+save time cursor total_
+save time cursor back_burst_
 
 save time cursor burst_
 save time cursor back_burst_
+
 show filter
 exit
 no
 
+filter region center.reg
+set binsize 2
 
 rescale x 196500 198000
 rescale x 215000 215700
@@ -47,3 +52,16 @@ _rebin
 _rebin
 also, what should I remove to get accurate spectra?
 gold and something band.
+
+
+
+HXD analysis
+xselect
+test
+read event
+/Users/changhyun/suzaku/research/data/406076010/hxd/event_cl
+ae406076010hxd_0_pinno_cl.evt.gz
+extract all
+save all test_hxd
+exit
+no
