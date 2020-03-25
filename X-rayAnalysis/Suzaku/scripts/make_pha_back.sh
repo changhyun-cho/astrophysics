@@ -30,13 +30,9 @@ no
 exit
 no
 EOF
-#	xisrmfgen phafile=xis${INST}.img outfile=xis${INST}.rmf
-# peak.curs_gti back.curs_gti
-# xis0.pha back_xis0.pha
-# also make a background
+
 	done
 
-	#cp $PHA_DIR/$BURST/*.rmf $SPEC_DIR/$BURST/
   cp $PHA_DIR/$BURST/*.pha $SPEC_DIR/$BURST/
 
 done

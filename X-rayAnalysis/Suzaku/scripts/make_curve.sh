@@ -2,7 +2,7 @@
 
 source /Users/changhyun/GitHub/astrophysics/X-rayAnalysis/Suzaku/scripts/env_SUZAKU.sh
 
-for BURST in 0 1 2 3 4 5 6 7 8; do #1 2 3 4 5 6 7 8
+for BURST in 0; do #0 1 2 3 4 5 6 7 8
 
 	cd $CURVE_DIR/$BURST
 
@@ -30,9 +30,9 @@ read event
 $EVENT_DIR
 $EVENTS
 set xyname DETX DETY
+set binsize $BINSIZE
 filter region center.reg
 filter time file burst_${BURST}.curs_gti
-set binsize $BINSIZE
 filter pha_cutoff $ENERGY
 extract all
 save all burst_${BURST}_xis${INST}_$TYPE

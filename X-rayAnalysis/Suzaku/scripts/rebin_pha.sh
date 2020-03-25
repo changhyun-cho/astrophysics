@@ -12,7 +12,7 @@ group 3072 3583 256
 group 3584 4095 256
 "
 
-for BURST in 0 1 2 3 4 5 6 7 8 ; do #0 1 2 3 4 5 6 7 8
+for BURST in 0; do #0 1 2 3 4 5 6 7 8
 
 	cd $SPEC_DIR/$BURST
 
