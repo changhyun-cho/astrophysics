@@ -8,7 +8,7 @@ for BURST in 0 1 2 3 4 5 6 7 8; do # 1 2 3 4 5 6 7 8
 	$XSELECT <<EOF
 ${TARGET}_pha_pin
 read event
-/Users/changhyun/suzaku/research/data/406076010/hxd/event_cl
+$HXD_EVENT_DIR
 ae406076010_hxd_pinbgd.evt.gz
 set binsize $BINSIZE
 filter time file burst_${BURST}.curs_gti
