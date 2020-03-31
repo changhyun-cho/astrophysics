@@ -20,6 +20,7 @@ no
 EOF
 
 cp $PHA_DIR/$BURST/back_hxd_pin.pha $SPEC_DIR/$BURST/
+cp $SPEC_DIR/$BURST/back_hxd_pin.pha $SPEC_DIR/$BURST/back_hxd_pin_expcor.pha
 
 done
 
