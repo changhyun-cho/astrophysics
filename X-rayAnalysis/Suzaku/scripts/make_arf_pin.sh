@@ -4,6 +4,7 @@ source /Users/changhyun/GitHub/astrophysics/X-rayAnalysis/Suzaku/scripts/env_SUZ
 
 for BURST in 0 1 2 3 4 5 6 7 8; do # 1 2 3 4 5 6 7 8
 	cd $SPEC_DIR/$BURST
+	rm hxd_pin.arf_pin.arf
 
 	$HXDARFGEN <<EOF
 hxd_pin.arf
