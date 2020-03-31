@@ -18,6 +18,7 @@ DATA=/Users/changhyun/suzaku/research/data/$TARGET
 EVENT_DIR=$DATA/xis/event_cl
 GTI_DIR=$DATA/xis/event_cl
 ATT_DATA=$DATA/auxil/ae${TARGET}.att.gz
+HXD_EVENT_DIR=$DATA/hxd/event_cl
 
 CAL_DIR=/Users/changhyun/caldb/data/suzaku/xis
 MASK_DIR=$CAL_DIR/bcf
@@ -27,6 +28,7 @@ XISSIMARFGEN=$HEASOFT/xissimarfgen
 XISRMFGEN=$HEASOFT/xisrmfgen
 XISARFGEN=$HEASOFT/xisarfgen
 HXDARFGEN=$HEASOFT/hxdarfgen
+HXDDTCOR=$HEASOFT/hxddtcor
 GRAPPA=$HEASOFT/grppha
 LCURVE=$HEASOFT/lcurve
 XSELECT=$HEASOFT/xselect
