@@ -124,3 +124,65 @@ if [ "$MODEL" = "diskbb+bbody" ]; then
   '
 
 fi
+
+if [ "$MODEL" = "gauss+powerlaw" ]; then
+
+  MODEL_VAR='model wabs*(gauss+powerlaw)
+  30
+  6.4 -1
+
+  0.01
+  0.9
+  0.01
+
+  6.4 -1
+
+  0.02
+
+  0.02
+
+  6.4 -1
+
+  0.03
+
+  0.03
+
+  6.4 -1
+
+  0.04
+
+  0.04
+  '
+
+fi
+
+if [ "$MODEL" = "gauss+powerlaw" ]; then
+
+  MODEL_VAR='model wabs*(gauss+powerlaw)
+  30
+  6.4 -1
+
+  0.01
+  0.9
+  0.01
+
+  6.4 -1
+
+  0.02
+
+  0.02
+
+  6.4 -1
+
+  0.03
+
+  0.03
+
+  6.4 -1
+
+  0.04
+
+  0.04
+  '
+
+fi

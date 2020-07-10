@@ -13,7 +13,6 @@ cp hxd_pin.pha ../../spec/1/
 
 
 
-filter region center.reg
 
 
 
@@ -21,7 +20,7 @@ xspec
 data hxd_pin.pha
 resp ae_hxd_pinhxnome9_20100731.rsp
 arf hxd_pin.arf_pin.arf
-backgrnd back_hxd_pin.pha
+backgrnd back_hxd_pin_expcor.pha
 setplot energy
 ignore **-12.0 70.0-**
 statistic chi
@@ -38,3 +37,34 @@ plot ldata delchi
 
 
 backgrnd back_hxd_pin.pha
+
+
+
+fparkey value=1.755875832736492E+04 \
+fitsfile="ae101005040hxd_wel_pin_bgd_expcor.pha+0"\
+keyword=EXPOSURE
+
+
+
+
+
+NEED TO THIS!
+
+fkeyprint infile=back_hxd_pin_expcor.pha keynam=EXPOSURE
+
+fparkey value=512427.50000 fitsfile="back_hxd_pin_expcor.pha+0" keyword=EXPOSURE
+fparkey value=512427.50000 fitsfile="back_hxd_pin_expcor.pha+1" keyword=EXPOSURE
+fparkey value=512427.50000 fitsfile="back_hxd_pin_expcor.pha+2" keyword=EXPOSURE
+
+fkeyprint infile=back_hxd_pin_expcor.pha keynam=EXPOSURE
+
+
+# FILE: ae101005040hxd_wel_pin_bgd_expcor.pha
+# KEYNAME: EXPOSURE
+
+# EXTENSION:    0
+EXPOSURE= 1.755875832736492E+04 / Exposure time
+# EXTENSION:    1
+EXPOSURE= 1.755875832736492E+04 / Exposure time
+# EXTENSION:    2
+EXPOSURE= 1.755875832736492E+04 / Exposure time
