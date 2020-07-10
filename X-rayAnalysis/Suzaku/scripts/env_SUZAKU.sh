@@ -1,12 +1,12 @@
 #!/bin/bash
 
-TARGET=406076010
-POS_X=500.613
-POS_Y=507.989
-POS_RA=257.2270
-POS_DEC=-44.1020
+TARGET=403044020
+POS_X=306.559 #500.613
+POS_Y=493.735 #507.989
+POS_RA=186.6567 #257.2270
+POS_DEC=-62.7706 #-44.1020
 BINSIZE=2 #2
-MODEL='compbb' # compbb compTT powerlaw bbodyrad bbody diskbb+bbody
+MODEL='gauss+powerlaw' # compbb compTT powerlaw bbodyrad bbody diskbb+bbody
 
 HOME=/Users/changhyun/suzaku/research/proc/$TARGET
 PHA_DIR=$HOME/pha

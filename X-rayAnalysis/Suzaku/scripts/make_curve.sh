@@ -6,14 +6,14 @@ for BURST in 0; do #0 1 2 3 4 5 6 7 8
 
 	cd $CURVE_DIR/$BURST
 
-	for INST in 0 1 3; do #0 1 3
+	for INST in 0; do #0 1 3
 
 		if [ $INST = 0 ]; then
-			EVENTS='ae406076010xi0_0_3x3n090l_cl.evt.gz ae406076010xi0_0_5x5n090l_cl.evt.gz'
+			EVENTS='ae403044020xi0_0_3x3n090a_cl.evt.gz ae403044020xi0_0_5x5n090a_cl.evt.gz'
 		elif [ $INST = 1 ]; then
-			EVENTS='ae406076010xi1_0_3x3n131b_cl.evt.gz ae406076010xi1_0_5x5n131b_cl.evt.gz'
+			EVENTS='ae403044020xi1_0_3x3n101b_cl.evt.gz ae403044020xi1_0_5x5n101b_cl.evt.gz'
 		elif [ $INST = 3 ]; then
-			EVENTS='ae406076010xi3_0_3x3n092a_cl.evt.gz ae406076010xi3_0_5x5n092a_cl.evt.gz'
+			EVENTS='ae403044020xi3_0_3x3n092a_cl.evt.gz ae403044020xi3_0_5x5n092a_cl.evt.gz'
 		fi
 
     for TYPE in soft hard; do
@@ -50,7 +50,7 @@ EOF
 burst_${BURST}_xis0_soft.lc
 burst_${BURST}_xis0_hard.lc
 -
-INDEF
+2055
 INDEF
 output
 yes
@@ -70,7 +70,7 @@ EOF
 done
 
 exit 0
-
+#INDEF
 #$LCURVE nser=1 cfile1="burst_${BURST}_xis${INST}_${TYPE}.lc" window="-" dtnb=INDEF nbint=INDEF outfile=" " plot=yes plotdev="burst_${BURST}_xis${INST}_${TYPE}.ps/cps"<<EOF
 #quit
 #EOF

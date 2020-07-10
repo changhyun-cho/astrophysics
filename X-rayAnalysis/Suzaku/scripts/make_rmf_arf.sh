@@ -7,11 +7,11 @@ cd $SPEC_DIR/0
 for INST in 0 1 3; do #0 1 3
 
 	if [ $INST = 0 ]; then
-		GTI_FILE='ae406076010xi0_0_3x3n090l_cl.evt.gz'
+		GTI_FILE='ae403044020xi0_0_3x3n090a_cl.evt.gz'
 	elif [ $INST = 1 ]; then
-		GTI_FILE='ae406076010xi1_0_3x3n131b_cl.evt.gz'
+		GTI_FILE='ae403044020xi1_0_3x3n101b_cl.evt.gz'
 	elif [ $INST = 3 ]; then
-		GTI_FILE='ae406076010xi3_0_3x3n092a_cl.evt.gz'
+		GTI_FILE='ae403044020xi3_0_3x3n092a_cl.evt.gz'
 	fi
 
 	$XISRMFGEN <<EOF
@@ -53,7 +53,7 @@ EOF
 
 done
 
-for BURST in 1 2 3 4 5 6 7 8; do
+for BURST in 0 ; do 
 
 	cp $SPEC_DIR/0/*.rmf $SPEC_DIR/$BURST/
 	cp $SPEC_DIR/0/*.arf $SPEC_DIR/$BURST/

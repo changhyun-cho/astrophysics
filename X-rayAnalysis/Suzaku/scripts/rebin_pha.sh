@@ -2,14 +2,14 @@
 
 source /Users/changhyun/GitHub/astrophysics/X-rayAnalysis/Suzaku/scripts/env_SUZAKU.sh
 
-REBIN="group 0 255 2
-group 256 511 64
-group 512 1023 32
-group 1024 2047 64
-group 2048 2559 128
-group 2560 3071 256
-group 3072 3583 256
-group 3584 4095 256
+REBIN="group 0 255 1
+group 256 511 8
+group 512 1023 8
+group 1024 2047 16
+group 2048 2559 16
+group 2560 3071 32
+group 3072 3583 32
+group 3584 4095 32
 "
 
 for BURST in 0; do #0 1 2 3 4 5 6 7 8
