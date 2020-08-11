@@ -6,7 +6,16 @@ POS_Y=493.735 #507.989
 POS_RA=186.6567 #257.2270
 POS_DEC=-62.7706 #-44.1020
 BINSIZE=2 #2
-MODEL='gauss+powerlaw' # compbb compTT powerlaw bbodyrad bbody diskbb+bbody
+MODEL='tbabs*(gauss+powerlaw*highecut)*cyclabs'
+#'tbabs*(gauss+powerlaw*highecut)*cyclabs'
+#'const*tbabs*(gauss+cutoffpl+cutoffpl)*cyclabs'
+#'gauss+powerlaw'
+#'compbb'
+#'compTT'
+#'powerlaw'
+#'bbodyrad'
+#'bbody'
+#'diskbb+bbody'
 
 HOME=/Users/changhyun/suzaku/research/proc/$TARGET
 PHA_DIR=$HOME/pha
@@ -23,7 +32,7 @@ HXD_EVENT_DIR=$DATA/hxd/event_cl
 CAL_DIR=/Users/changhyun/caldb/data/suzaku/xis
 MASK_DIR=$CAL_DIR/bcf
 
-HEASOFT=/Users/changhyun/heasoft-6.26.1/x86_64-apple-darwin19.0.0/bin/
+HEASOFT=/Users/changhyun/heasoft-6.27.2/x86_64-apple-darwin19.3.0/bin
 XISSIMARFGEN=$HEASOFT/xissimarfgen
 XISRMFGEN=$HEASOFT/xisrmfgen
 XISARFGEN=$HEASOFT/xisarfgen

@@ -186,3 +186,135 @@ if [ "$MODEL" = "gauss+powerlaw" ]; then
   '
 
 fi
+
+if [ "$MODEL" = "tbabs*(gauss+powerlaw*highecut)*cyclabs" ]; then
+
+  MODEL_VAR='model tbabs * (gauss + powerlaw * highecut) * cyclabs
+  27
+  6.4 -1
+  0.01 -1
+  0.01
+  0.64
+  0.01
+  29
+  21
+  2.45
+  30
+  5 +1
+  0 -1
+
+
+  6.4 -1
+  0.01 -1
+  0.02
+
+  0.02
+
+
+
+
+
+  0 -1
+
+
+  6.4 -1
+  0.01 -1
+  0.03
+
+  0.03
+
+
+
+
+
+  0 -1
+
+
+  6.4 -1
+  0.01 -1
+  0 -1
+
+  0.04
+
+
+
+
+
+  0 -1
+
+  '
+
+fi
+
+if [ "$MODEL" = "const*tbabs*(gauss+cutoffpl+cutoffpl)*cyclabs" ]; then
+
+  MODEL_VAR='model const * tbabs * (gauss + cutoffpl + cutoffpl) * cyclabs
+  1 -1
+  30
+  6.4 -1
+  1
+  10
+
+  10
+  0.01
+
+  10
+  0.03
+
+
+  1 0
+  0 -1
+
+  2
+
+  6.4 -1
+
+  0.02
+
+
+
+
+
+
+
+
+
+  0 -1
+
+  3
+
+  6.4 -1
+
+  0.03
+
+
+
+
+
+
+
+
+
+  0 -1
+
+  4
+
+  6.4 -1
+
+  0 -1
+
+
+
+
+
+
+
+
+
+  0 -1
+
+
+  newpar 10 = 7
+  '
+
+fi
