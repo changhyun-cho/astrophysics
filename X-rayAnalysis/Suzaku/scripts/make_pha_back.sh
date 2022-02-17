@@ -16,13 +16,13 @@ for BURST in 0; do # 1 2 3 4 5 6 7 8
 		fi
 
 		$XSELECT <<EOF
-${TARGET}_pha_back_XIS$INST
+proc_back
 read event
 $EVENT_DIR
 $EVENTS
 set xyname DETX DETY
 filter region back_center.reg
-filter time file back_burst_${BURST}.curs_gti
+filter phase 54837.07770217184 0.00793229 0.0-0.2
 set binsize $BINSIZE
 extract all
 save all back_xis$INST
@@ -38,3 +38,6 @@ EOF
 done
 
 exit 0
+# ${TARGET}_back_XIS$INST
+# filter region back_center.reg
+# filter time file back_burst_${BURST}.curs_gti

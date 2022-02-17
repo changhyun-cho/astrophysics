@@ -252,24 +252,24 @@ if [ "$MODEL" = "const*tbabs*(gauss+cutoffpl+cutoffpl)*cyclabs" ]; then
   1 -1
   30
   6.4 -1
-  1
+  0.01 -1
   10
-
+  -1
   10
   0.01
-
+  -2.0,  -1,  -3.0, -4.0, 9.0, 10.0
   10
   0.03
-
-
-  1 0
+  1.0 -1
+  30
+  1
   0 -1
 
-  2
+  2 +1
 
   6.4 -1
 
-  0.02
+
 
 
 
@@ -281,11 +281,11 @@ if [ "$MODEL" = "const*tbabs*(gauss+cutoffpl+cutoffpl)*cyclabs" ]; then
 
   0 -1
 
-  3
+  3 +1
 
   6.4 -1
 
-  0.03
+
 
 
 
@@ -297,7 +297,7 @@ if [ "$MODEL" = "const*tbabs*(gauss+cutoffpl+cutoffpl)*cyclabs" ]; then
 
   0 -1
 
-  4
+  4 +1
 
   6.4 -1
 

@@ -1,0 +1,22 @@
+xselect
+SUZAKU_TIMING
+read event
+/Users/changhyun/suzaku/research/data/403044020_timing/xis/event_cl
+ae403044020xi0_0_3x3n090a_cl.evt.gz ae403044020xi0_0_5x5n090a_cl.evt.gz
+
+
+cd /Users/changhyun/suzaku/research/data/403044020_timing/xis/event_cl
+powspec
+ae403044020xi0_0_3x3n090a_cl.evt.gz
+/Users/changhyun/heasoft-6.27.2/x86_64-apple-darwin19.3.0/xrdefaults/default_win.wi
+3
+INDEF
+INDEF
+2
+default
+yes
+/xw
+log x
+log y
+plot
+hardcopy bin3.ps/cps

@@ -11,7 +11,6 @@ read event
 $HXD_EVENT_DIR
 ae403044020_hxd_pinbgd.evt.gz
 set binsize $BINSIZE
-filter time file burst_${BURST}.curs_gti
 extract all
 save all back_hxd_pin
 exit
@@ -26,3 +25,5 @@ cp $PHA_DIR/$BURST/back_hxd_pin.pha $SPEC_DIR/$BURST/back_hxd_pin_expcor.pha
 done
 
 exit 0
+
+# filter time file burst_${BURST}.curs_gti

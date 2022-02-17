@@ -1,12 +1,12 @@
 #!/bin/bash
 
-TARGET=403044020
+TARGET=403044020_timing
 POS_X=306.559 #500.613
 POS_Y=493.735 #507.989
 POS_RA=186.6567 #257.2270
 POS_DEC=-62.7706 #-44.1020
 BINSIZE=2 #2
-MODEL='tbabs*(gauss+powerlaw*highecut)*cyclabs'
+MODEL='const*tbabs*(gauss+cutoffpl+cutoffpl)*cyclabs'
 #'tbabs*(gauss+powerlaw*highecut)*cyclabs'
 #'const*tbabs*(gauss+cutoffpl+cutoffpl)*cyclabs'
 #'gauss+powerlaw'

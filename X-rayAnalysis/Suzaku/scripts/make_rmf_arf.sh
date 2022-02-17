@@ -53,7 +53,7 @@ EOF
 
 done
 
-for BURST in 0 ; do 
+for BURST in 0 ; do
 
 	cp $SPEC_DIR/0/*.rmf $SPEC_DIR/$BURST/
 	cp $SPEC_DIR/0/*.arf $SPEC_DIR/$BURST/
