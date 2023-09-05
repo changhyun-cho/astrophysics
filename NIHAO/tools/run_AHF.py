@@ -2,28 +2,31 @@ import pynbody
 import os
 import sys
 
+
 def get_info(f):
     global dir_data, m_gal, n_file
-    
+
     # extract mass and file numbers
     dir_data = str(f[:-14])
     m_gal = str(f[-14:-6])
-    n_file = int(int(f[-5:])/16)
+    n_file = int(int(f[-5:]) / 16)
+
 
 def run_AHF(file):
-    
+
     get_info(file)
-    
+
     print(dir_data)
     os.chdir(dir_data)
     for i in range(n_file):
-        fname=dir_data+m_gal+'.'+'{:05d}'.format(int((i+1)*16))
+        fname = dir_data + m_gal + "." + "{:05d}".format(int((i + 1) * 16))
         print(fname)
         s = pynbody.load(fname)
         s.halos()
 
-if __name__ == '__main__':
-    
+
+if __name__ == "__main__":
+
     last_file = str(sys.argv[1])
     run_AHF(last_file)
 
