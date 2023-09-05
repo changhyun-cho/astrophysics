@@ -498,8 +498,29 @@ def distNIHAO(*args):
         )
         return vel
 
+    # Figure settings
+    fig, axs = plt.subplots(2, 2, figsize=(10,15))
+    axs[0, 0].set(xlabel=r"mass [$M_{\odot}$]", ylabel="frequency")
+    axs[0, 0].set_xscale("log")
+    axs[0, 0].set_yscale("log")
+    axs[0, 0].legend()  # fontsize=15
+
+    axs[1, 0].set(xlabel=r"number density [cm$^{-3}$]", ylabel="frequency")
+    axs[1, 0].set_xscale("log")
+    axs[1, 0].set_yscale("log")
+    axs[1, 0].axvline(x=10, color="b", label=r"10 H atoms cm$^{-3}$")
+    axs[1, 0].legend()
+
+    axs[0, 1].set(xlabel=r"temperature [K]", ylabel="frequency")
+    axs[0, 1].set_xscale("log")
+    axs[0, 1].legend()
+
+    axs[1, 1].set(xlabel=r"gas velocity [km s$^{-1}$]", ylabel="frequency")
+    axs[1, 1].set_xscale("log")
+    axs[1, 1].set_yscale("log")
+    axs[1, 1].legend()
+
     i = 0
-    fig, axs = plt.subplots(2, 2)
     for data in args:
         halo, halo_d, halo_s, halo_g, r_bulge = getPARTICLES(data[0])
         # Particle mass
@@ -526,7 +547,7 @@ def distNIHAO(*args):
 
         # Temperature
         temp = halo_g["temp"]
-        plt.hist(
+        axs[0, 1].hist(
             temp,
             bins=np.logspace(np.log(np.min(temp)), np.log(np.max(temp)), 100),
             log=True,
@@ -538,7 +559,7 @@ def distNIHAO(*args):
 
         # Velocity
         vel = get_vel(halo_g, r_bulge)
-        plt.hist(
+        axs[1, 1].hist(
             vel,
             bins=np.logspace(np.log(np.min(vel)), np.log(np.max(vel)), 100),
             density=True,
@@ -547,93 +568,55 @@ def distNIHAO(*args):
             label=data[1],
         )
         i += 1
-
-    axs[0, 0].set(xlabel=r"mass [$M_{\odot}$]", ylabel="frequency")
-    axs[0, 0].set_xscale("log")
-    axs[0, 0].set_yscale("log")
-    axs[0, 0].legend()  # fontsize=15
-
-    axs[1, 0].set(xlabel=r"number density [cm$^{-3}$]", ylabel="frequency")
-    axs[1, 0].set_xscale("log")
-    axs[1, 0].set_yscale("log")
-    axs[1, 0].axvline(x=10, color="b", label=r"10 hydrogen atoms cm$^{-3}$")
-    axs[1, 0].legend()
-
-    axs[0, 1].set(xlabel=r"temperature [K]", ylabel="frequency")
-    axs[0, 1].set_xscale("log")
-    axs[0, 1].legend()
-
-    axs[1, 1].set(xlabel=r"gas velocity [km s$^{-1}$]", ylabel="frequency")
-    axs[1, 1].set_xscale("log")
-    axs[1, 1].set_yscale("log")
-    axs[1, 1].legend(fontsize=15)
     plt.show()
+
+
+    # Profiles
+    fig, axs = plt.subplots(3, 4, figsize=(10,15))
+    for k in range(4):
+        axs[0, k].set(xlabel="R [kpc]", ylabel=r"$v_{circ}$ [km s$^{-1}$]")
+        axs[1, k].set(xlabel="R [kpc]", ylabel=r"$\sigma_{0}$ [km s$^{-1}$]")
+        axs[2, k].set(xlabel="R [kpc]", ylabel=r"$\rho$ [M$_{\odot}$ kpc$^{-3}$]")
+        axs[2, k].set_xscale("log")
+        axs[2, k].set_yscale("log")
 
     i = 0
     for data in args:
         halo, halo_d, halo_s, halo_g, r_bulge = getPARTICLES(data[0])
         r_within = f.Sphere(r_bulge)
 
-    # create profiles object (by default this is a 3D profile)
-    p_s = pynbody.analysis.profile.Profile(halo_s[r_within], rmin=0.01, rmax=50, ndim=3)
-    p_g = pynbody.analysis.profile.Profile(halo_g[r_within], rmin=0.01, rmax=50, ndim=3)
-    p_t = pynbody.analysis.profile.Profile(halo[r_within], rmin=0.01, rmax=50, ndim=3)
-    # make a circular velocity of the star
-    plt.plot(
-        p_t["rbins"].in_units("kpc"),
-        p_t["v_circ"].in_units("km s^-1"),
-        color="purple",
-        label="Total",
-    )  # , linestyle=linstyle)
-    plt.plot(
-        p_s["rbins"].in_units("kpc"),
-        p_s["v_circ"].in_units("km s^-1"),
-        color="red",
-        label="Star",
-    )  # , linestyle=linstyle)
-    plt.plot(
-        p_g["rbins"].in_units("kpc"),
-        p_g["v_circ"].in_units("km s^-1"),
-        color="blue",
-        label="Gas",
-    )  # , linestyle=linstyle)
-    # make a 3D density plot of the star
-    plt.plot(
-        p_t["rbins"].in_units("kpc"),
-        p_t["vr_disp"].in_units("km s^-1"),
-        color="purple",
-        label="Total",
-    )  # , linestyle=linstyle)
-    plt.plot(
-        p_s["rbins"].in_units("kpc"),
-        p_s["vr_disp"].in_units("km s^-1"),
-        color="red",
-        label="Star",
-    )  # , linestyle=linstyle)
-    plt.plot(
-        p_g["rbins"].in_units("kpc"),
-        p_g["vr_disp"].in_units("km s^-1"),
-        color="blue",
-        label="Gas",
-    )  # , linestyle=linstyle)
-    # make a 3D density plot of the dark matter
-    plt.plot(
-        p_t["rbins"].in_units("kpc"), p_t["density"], color="purple", label="Total"
-    )  # , linestyle=linstyle)
-    plt.plot(
-        p_s["rbins"].in_units("kpc"), p_s["density"], color="red", label="Star"
-    )  # , linestyle=linstyle)
-    plt.plot(
-        p_g["rbins"].in_units("kpc"), p_g["density"], color="blue", label="Gas"
-    )  # , linestyle=linstyle)
-    plt.axhline(y=250, color="g", linestyle="--")
-    plt.set_xlabel("R [kpc]")
-    plt.set_ylabel(r"$v_{circ}$ [km s$^{-1}$]")
-    #            plt.set_yscale('log')
-    plt.set_xlabel("R [kpc]")
-    plt.set_ylabel(r"$\sigma_{0}$ [km s$^{-1}$]")
-    #            plt.set_yscale('log')
-    plt.set_xlabel("R [kpc]")
-    plt.set_ylabel(r"$\rho$ [M$_{\odot}$ kpc$^{-3}$]")
-    plt.set_xscale("log")
-    plt.set_yscale("log")
+        # create profiles object (by default this is a 3D profile)
+        p_t = pynbody.analysis.profile.Profile(halo[r_within],  rmin=0.01,rmax=50,ndim=3)
+        p_d = pynbody.analysis.profile.Profile(halo_d[r_within],rmin=0.01,rmax=50,ndim=3)
+        p_s = pynbody.analysis.profile.Profile(halo_s[r_within],rmin=0.01,rmax=50,ndim=3)
+        p_g = pynbody.analysis.profile.Profile(halo_g[r_within],rmin=0.01,rmax=50,ndim=3)
+
+        profile = (p_t, p_d, p_s, p_g)
+        p_type = ("Total", "DM", "Star", "Gas")
+
+        # make circular velocities
+        for k in range(4):
+            axs[0, k].plot(
+                profile[k]["rbins"].in_units("kpc"),
+                profile[k]["v_circ"].in_units("km s^-1"),
+                color=colors[i],
+                label=data[1]+p_type[k],
+            )
+
+        # make velocity dispersions
+        for k in range(4):
+            axs[1, k].plot(
+                profile[k]["rbins"].in_units("kpc"),
+                profile[k]["vr_disp"].in_units("km s^-1"),
+                color=colors[i],
+                label=data[1]+p_type[k],
+            )
+
+        # make a 3D density plot of the dark matter
+        for k in range(4):
+            axs[2, k].plot(
+                profile[k]["rbins"].in_units("kpc"),
+                profile[k]["density"],
+                color=colors[i],
+                label=data[1]+p_type[k],
+            )
