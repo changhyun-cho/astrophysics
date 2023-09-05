@@ -1,0 +1,44 @@
+import pynbody
+import os
+import sys
+
+def get_info(f):
+    global dir_data, m_gal, n_file
+    
+    # extract mass and file numbers
+    dir_data = str(f[:-14])
+    m_gal = str(f[-14:-6])
+    n_file = int(int(f[-5:])/16)
+
+def run_AHF(file):
+    
+    get_info(file)
+    
+    print(dir_data)
+    os.chdir(dir_data)
+    for i in range(n_file):
+        fname=dir_data+m_gal+'.'+'{:05d}'.format(int((i+1)*16))
+        print(fname)
+        s = pynbody.load(fname)
+        s.halos()
+
+if __name__ == '__main__':
+    
+    last_file = str(sys.argv[1])
+    run_AHF(last_file)
+
+#    files = ('/data/cc6881/gasfix_nihao1/g6.86e12/g6.86e12.01024',
+#             '/data/cc6881/movies/g7.08e11/g7.08e11.01024',
+#             '/data/cc6881/gasfix_nihao1/g8.94e12/g8.94e12.01024',
+#             '/data/cc6881/gasfix_nihao1/g2.02e13/g2.02e13.01024',
+#             '/data/cc6881/new_fb_test/torque_test/g2.71e12.01024',
+#             '/data/cc6881/movies/g1.12e12/g1.12e12.01024',
+#             '/data/cc6881/gasfix_nihao1/g2.11e13/g2.11e13.01024',
+#             '/data/cc6881/gasfix_nihao1/g2.20e13/g2.20e13.01024',
+#             '/data/cc6881/new_fb_test/alpha_test/g2.37e12.01024',
+#             '/data/cc6881/movies/g2.83e10/g2.83e10.01024')
+
+#    for file in files:
+#        run_AHF(file)
+
+# python3 run_AHF.py <LAST CHECKPOINT>
