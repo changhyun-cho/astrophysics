@@ -499,27 +499,7 @@ def distNIHAO(*args):
         return vel
 
     # Figure settings
-    fig, axs = plt.subplots(2, 2, figsize=(10,15))
-    axs[0, 0].set(xlabel=r"mass [$M_{\odot}$]", ylabel="frequency")
-    axs[0, 0].set_xscale("log")
-    axs[0, 0].set_yscale("log")
-    axs[0, 0].legend()  # fontsize=15
-
-    axs[1, 0].set(xlabel=r"number density [cm$^{-3}$]", ylabel="frequency")
-    axs[1, 0].set_xscale("log")
-    axs[1, 0].set_yscale("log")
-    axs[1, 0].axvline(x=10, color="b", label=r"10 H atoms cm$^{-3}$")
-    axs[1, 0].legend()
-
-    axs[0, 1].set(xlabel=r"temperature [K]", ylabel="frequency")
-    axs[0, 1].set_xscale("log")
-    axs[0, 1].legend()
-
-    axs[1, 1].set(xlabel=r"gas velocity [km s$^{-1}$]", ylabel="frequency")
-    axs[1, 1].set_xscale("log")
-    axs[1, 1].set_yscale("log")
-    axs[1, 1].legend()
-
+    fig, axs = plt.subplots(2, 2, figsize=(15,10))
     i = 0
     for data in args:
         halo, halo_d, halo_s, halo_g, r_bulge = getPARTICLES(data[0])
@@ -568,18 +548,31 @@ def distNIHAO(*args):
             label=data[1],
         )
         i += 1
+
+    axs[0, 0].set(xlabel=r"mass [$M_{\odot}$]", ylabel="frequency")
+    axs[0, 0].set_xscale("log")
+    axs[0, 0].set_yscale("log")
+    axs[0, 0].legend()  # fontsize=15
+
+    axs[1, 0].set(xlabel=r"number density [cm$^{-3}$]", ylabel="frequency")
+    axs[1, 0].set_xscale("log")
+    axs[1, 0].set_yscale("log")
+    axs[1, 0].axvline(x=10, color="b", label=r"10 H atoms cm$^{-3}$")
+    axs[1, 0].legend()
+
+    axs[0, 1].set(xlabel=r"temperature [K]", ylabel="frequency")
+    axs[0, 1].set_xscale("log")
+    axs[0, 1].legend()
+
+    axs[1, 1].set(xlabel=r"gas velocity [km s$^{-1}$]", ylabel="frequency")
+    axs[1, 1].set_xscale("log")
+    axs[1, 1].set_yscale("log")
+    axs[1, 1].legend()
     plt.show()
 
 
     # Profiles
-    fig, axs = plt.subplots(3, 4, figsize=(10,15))
-    for k in range(4):
-        axs[0, k].set(xlabel="R [kpc]", ylabel=r"$v_{circ}$ [km s$^{-1}$]")
-        axs[1, k].set(xlabel="R [kpc]", ylabel=r"$\sigma_{0}$ [km s$^{-1}$]")
-        axs[2, k].set(xlabel="R [kpc]", ylabel=r"$\rho$ [M$_{\odot}$ kpc$^{-3}$]")
-        axs[2, k].set_xscale("log")
-        axs[2, k].set_yscale("log")
-
+    fig, axs = plt.subplots(3, 4, figsize=(15,15))
     i = 0
     for data in args:
         halo, halo_d, halo_s, halo_g, r_bulge = getPARTICLES(data[0])
@@ -620,3 +613,14 @@ def distNIHAO(*args):
                 color=colors[i],
                 label=data[1]+p_type[k],
             )
+        i += 1
+    for k in range(4):
+        axs[0, k].set(xlabel="R [kpc]", ylabel=r"$v_{circ}$ [km s$^{-1}$]")
+        axs[1, k].set(xlabel="R [kpc]", ylabel=r"$\sigma_{0}$ [km s$^{-1}$]")
+        axs[2, k].set(xlabel="R [kpc]", ylabel=r"$\rho$ [M$_{\odot}$ kpc$^{-3}$]")
+        axs[2, k].set_xscale("log")
+        axs[2, k].set_yscale("log")
+    axs[0, 3].legend()
+    axs[1, 3].legend()
+    axs[2, 3].legend()
+    plt.show()
