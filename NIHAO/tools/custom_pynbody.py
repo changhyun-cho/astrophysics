@@ -475,100 +475,165 @@ def distNIHAO(*args):
         h = s.halos()  # load the halos
         try:
             pynbody.analysis.halo.center(h[1], mode="hyb", vel=True)
+            pynbody.analysis.angmom.faceon(h[1])
+            r_bulge = "5 kpc"
         except Exception:
-            print("Error : Could not center!")
-        gas_part = h[1].gas  # [r_within]
-        star_part = h[1].star  # [r_within]
-        return (gas_part, star_part)
+            print(
+                "Error: Cannot face-on! Might be an elliptical galaxy. Will center it."
+            )
+            pynbody.analysis.halo.center(h[1], mode="hyb", vel=True)
+            r_bulge = "10 kpc"
+        h_g = h[1].gas
+        h_s = h[1].star
+        h_d = h[1].dm
+        return (h[1], h_d, h_s, h_g, r_bulge)
 
-    # Mass
-    i = 0
-    for data in args:
-        gas_particles, star_particles = getPARTICLES(data[0])
-        plt.hist(
-            gas_particles["mass"],
-            alpha=0.5,
-            color=colors[i],
-            bins=np.logspace(5.5, 8.5, 100),
-            label=data[1],
-            density=True,
-        )
-        i += 1
-    plt.xlabel(r"mass [$M_{\odot}$]", fontsize=15)
-    plt.ylabel("frequency", fontsize=15)
-    plt.xscale("log")
-    plt.yscale("log")
-    plt.legend(fontsize=15)
-    plt.show()
-
-    # Number density
-    i = 0
-    for data in args:
-        gas_particles, star_particles = getPARTICLES(data[0])
-        plt.hist(
-            gas_particles["rho"].in_units("g cm**-3") / 1.67262192e-24,
-            color=colors[i],
-            bins=np.logspace(-6, 2, 100),
-            alpha=0.5,
-            label=data[1],
-            density=True,
-        )
-        i += 1
-    plt.xlabel(r"number density (cm$^{-3}$)", fontsize=15)
-    plt.ylabel("frequency", fontsize=15)
-    plt.xscale("log")
-    plt.yscale("log")
-    plt.axvline(x=10, color="b", label=r"10 hydrogen atoms cm$^{-3}$")
-    plt.legend(fontsize=15)
-    plt.show()
-
-    # Temperature
-    i = 0
-    for data in args:
-        gas_particles, star_particles = getPARTICLES(data[0])
-        plt.hist(
-            gas_particles["temp"],
-            bins=np.logspace(2.5, 7.5, 100),
-            color=colors[i],
-            log=True,
-            alpha=0.5,
-            label=data[1],
-            density=True,
-        )
-        i += 1
-    plt.xlabel(r"temperature [K]", fontsize=15)
-    plt.ylabel("frequency", fontsize=15)
-    plt.xscale("log")
-    plt.legend(fontsize=15)
-    plt.show()
-
-    # Velocity
-    i = 0
-    for data in args:
-        gas_particles, star_particles = getPARTICLES(data[0])
-        r_within = f.Sphere("50 kpc")
-        particle = gas_particles[r_within]
-        particle_vel = np.sqrt(
+    def get_vel(halo, r_bulge):
+        r_within = f.Sphere(r_bulge)
+        particle = halo[r_within]
+        vel = np.sqrt(
             particle["vx"] * particle["vx"]
             + particle["vy"] * particle["vy"]
             + particle["vz"] * particle["vz"]
         )
+        return vel
 
-        plt.hist(
-            particle_vel,
-            bins=np.logspace(1, 4, 100),
-            alpha=0.5,
-            color=colors[i],
-            label=data[1],
+    i = 0
+    fig, axs = plt.subplots(2, 2)
+    for data in args:
+        halo, halo_d, halo_s, halo_g, r_bulge = getPARTICLES(data[0])
+        # Particle mass
+        mass = halo_g["mass"]
+        axs[0, 0].hist(
+            mass,
+            bins=np.logspace(np.log(np.min(mass)), np.log(np.max(mass)), 100),
             density=True,
+            color=colors[i],
+            alpha=0.5,
+            label=data[1],
+        )
+
+        # Number density
+        rho = halo_g["rho"].in_units("g cm**-3") / 1.67262192e-24
+        axs[1, 0].hist(
+            rho,
+            bins=np.logspace(np.log(np.min(rho)), np.log(np.max(rho)), 100),
+            density=True,
+            color=colors[i],
+            alpha=0.5,
+            label=data[1],
+        )
+
+        # Temperature
+        temp = halo_g["temp"]
+        plt.hist(
+            temp,
+            bins=np.logspace(np.log(np.min(temp)), np.log(np.max(temp)), 100),
+            log=True,
+            density=True,
+            color=colors[i],
+            alpha=0.5,
+            label=data[1],
+        )
+
+        # Velocity
+        vel = get_vel(halo_g, r_bulge)
+        plt.hist(
+            vel,
+            bins=np.logspace(np.log(np.min(vel)), np.log(np.max(vel)), 100),
+            density=True,
+            color=colors[i],
+            alpha=0.5,
+            label=data[1],
         )
         i += 1
-    plt.xlabel(r"velocity [km s$^{-1}$]", fontsize=15)
-    plt.ylabel("frequency", fontsize=15)
-    plt.xscale("log")
-    plt.yscale("log")
-    plt.legend(fontsize=15)
+
+    axs[0, 0].set(xlabel=r"mass [$M_{\odot}$]", ylabel="frequency")
+    axs[0, 0].set_xscale("log")
+    axs[0, 0].set_yscale("log")
+    axs[0, 0].legend()  # fontsize=15
+
+    axs[1, 0].set(xlabel=r"number density [cm$^{-3}$]", ylabel="frequency")
+    axs[1, 0].set_xscale("log")
+    axs[1, 0].set_yscale("log")
+    axs[1, 0].axvline(x=10, color="b", label=r"10 hydrogen atoms cm$^{-3}$")
+    axs[1, 0].legend()
+
+    axs[0, 1].set(xlabel=r"temperature [K]", ylabel="frequency")
+    axs[0, 1].set_xscale("log")
+    axs[0, 1].legend()
+
+    axs[1, 1].set(xlabel=r"gas velocity [km s$^{-1}$]", ylabel="frequency")
+    axs[1, 1].set_xscale("log")
+    axs[1, 1].set_yscale("log")
+    axs[1, 1].legend(fontsize=15)
     plt.show()
 
-    # p_gas  = profile.Profile(gas_particles,  ndim=3, nbin=500)
-    # p_star = profile.Profile(star_particles, ndim=3, nbin=500)
+    i = 0
+    for data in args:
+        halo, halo_d, halo_s, halo_g, r_bulge = getPARTICLES(data[0])
+        r_within = f.Sphere(r_bulge)
+
+    # create profiles object (by default this is a 3D profile)
+    p_s = pynbody.analysis.profile.Profile(halo_s[r_within], rmin=0.01, rmax=50, ndim=3)
+    p_g = pynbody.analysis.profile.Profile(halo_g[r_within], rmin=0.01, rmax=50, ndim=3)
+    p_t = pynbody.analysis.profile.Profile(halo[r_within], rmin=0.01, rmax=50, ndim=3)
+    # make a circular velocity of the star
+    plt.plot(
+        p_t["rbins"].in_units("kpc"),
+        p_t["v_circ"].in_units("km s^-1"),
+        color="purple",
+        label="Total",
+    )  # , linestyle=linstyle)
+    plt.plot(
+        p_s["rbins"].in_units("kpc"),
+        p_s["v_circ"].in_units("km s^-1"),
+        color="red",
+        label="Star",
+    )  # , linestyle=linstyle)
+    plt.plot(
+        p_g["rbins"].in_units("kpc"),
+        p_g["v_circ"].in_units("km s^-1"),
+        color="blue",
+        label="Gas",
+    )  # , linestyle=linstyle)
+    # make a 3D density plot of the star
+    plt.plot(
+        p_t["rbins"].in_units("kpc"),
+        p_t["vr_disp"].in_units("km s^-1"),
+        color="purple",
+        label="Total",
+    )  # , linestyle=linstyle)
+    plt.plot(
+        p_s["rbins"].in_units("kpc"),
+        p_s["vr_disp"].in_units("km s^-1"),
+        color="red",
+        label="Star",
+    )  # , linestyle=linstyle)
+    plt.plot(
+        p_g["rbins"].in_units("kpc"),
+        p_g["vr_disp"].in_units("km s^-1"),
+        color="blue",
+        label="Gas",
+    )  # , linestyle=linstyle)
+    # make a 3D density plot of the dark matter
+    plt.plot(
+        p_t["rbins"].in_units("kpc"), p_t["density"], color="purple", label="Total"
+    )  # , linestyle=linstyle)
+    plt.plot(
+        p_s["rbins"].in_units("kpc"), p_s["density"], color="red", label="Star"
+    )  # , linestyle=linstyle)
+    plt.plot(
+        p_g["rbins"].in_units("kpc"), p_g["density"], color="blue", label="Gas"
+    )  # , linestyle=linstyle)
+    plt.axhline(y=250, color="g", linestyle="--")
+    plt.set_xlabel("R [kpc]")
+    plt.set_ylabel(r"$v_{circ}$ [km s$^{-1}$]")
+    #            plt.set_yscale('log')
+    plt.set_xlabel("R [kpc]")
+    plt.set_ylabel(r"$\sigma_{0}$ [km s$^{-1}$]")
+    #            plt.set_yscale('log')
+    plt.set_xlabel("R [kpc]")
+    plt.set_ylabel(r"$\rho$ [M$_{\odot}$ kpc$^{-3}$]")
+    plt.set_xscale("log")
+    plt.set_yscale("log")
