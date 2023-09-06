@@ -499,7 +499,7 @@ def distNIHAO(*args):
         return vel
 
     # Figure settings
-    fig, axs = plt.subplots(2, 2, figsize=(15,10))
+    fig, axs = plt.subplots(2, 2, figsize=(15, 10))
     i = 0
     for data in args:
         halo, halo_d, halo_s, halo_g, r_bulge = getPARTICLES(data[0])
@@ -507,7 +507,7 @@ def distNIHAO(*args):
         mass = halo_g["mass"]
         axs[0, 0].hist(
             mass,
-            bins=np.logspace(np.log(np.min(mass)), np.log(np.max(mass)), 100),
+            bins=np.logspace(5, np.log(np.max(mass)), 100),
             density=True,
             color=colors[i],
             alpha=0.5,
@@ -518,7 +518,7 @@ def distNIHAO(*args):
         rho = halo_g["rho"].in_units("g cm**-3") / 1.67262192e-24
         axs[1, 0].hist(
             rho,
-            bins=np.logspace(np.log(np.min(rho)), np.log(np.max(rho)), 100),
+            bins=np.logspace(-6, 2, 100),
             density=True,
             color=colors[i],
             alpha=0.5,
@@ -529,7 +529,7 @@ def distNIHAO(*args):
         temp = halo_g["temp"]
         axs[0, 1].hist(
             temp,
-            bins=np.logspace(np.log(np.min(temp)), np.log(np.max(temp)), 100),
+            bins=np.logspace(2, 8, 100),
             log=True,
             density=True,
             color=colors[i],
@@ -541,7 +541,7 @@ def distNIHAO(*args):
         vel = get_vel(halo_g, r_bulge)
         axs[1, 1].hist(
             vel,
-            bins=np.logspace(np.log(np.min(vel)), np.log(np.max(vel)), 100),
+            bins=np.logspace(0, np.log(np.max(vel)), 100),
             density=True,
             color=colors[i],
             alpha=0.5,
@@ -570,48 +570,55 @@ def distNIHAO(*args):
     axs[1, 1].legend()
     plt.show()
 
-
     # Profiles
-    fig, axs = plt.subplots(3, 4, figsize=(15,15))
+    fig, axs = plt.subplots(3, 4, figsize=(15, 15))
     i = 0
     for data in args:
         halo, halo_d, halo_s, halo_g, r_bulge = getPARTICLES(data[0])
         r_within = f.Sphere(r_bulge)
 
         # create profiles object (by default this is a 3D profile)
-        p_t = pynbody.analysis.profile.Profile(halo[r_within],  rmin=0.01,rmax=50,ndim=3)
-        p_d = pynbody.analysis.profile.Profile(halo_d[r_within],rmin=0.01,rmax=50,ndim=3)
-        p_s = pynbody.analysis.profile.Profile(halo_s[r_within],rmin=0.01,rmax=50,ndim=3)
-        p_g = pynbody.analysis.profile.Profile(halo_g[r_within],rmin=0.01,rmax=50,ndim=3)
+        p_t = pynbody.analysis.profile.Profile(
+            halo[r_within], rmin=0.01, rmax=50, ndim=3
+        )
+        p_d = pynbody.analysis.profile.Profile(
+            halo_d[r_within], rmin=0.01, rmax=50, ndim=3
+        )
+        p_s = pynbody.analysis.profile.Profile(
+            halo_s[r_within], rmin=0.01, rmax=50, ndim=3
+        )
+        p_g = pynbody.analysis.profile.Profile(
+            halo_g[r_within], rmin=0.01, rmax=50, ndim=3
+        )
 
         profile = (p_t, p_d, p_s, p_g)
         p_type = ("Total", "DM", "Star", "Gas")
 
-        # make circular velocities
+        # circular velocities
         for k in range(4):
             axs[0, k].plot(
                 profile[k]["rbins"].in_units("kpc"),
                 profile[k]["v_circ"].in_units("km s^-1"),
                 color=colors[i],
-                label=data[1]+p_type[k],
+                label=data[1] + p_type[k],
             )
 
-        # make velocity dispersions
+        # velocity dispersions
         for k in range(4):
             axs[1, k].plot(
                 profile[k]["rbins"].in_units("kpc"),
                 profile[k]["vr_disp"].in_units("km s^-1"),
                 color=colors[i],
-                label=data[1]+p_type[k],
+                label=data[1] + p_type[k],
             )
 
-        # make a 3D density plot of the dark matter
+        # 3D densities
         for k in range(4):
             axs[2, k].plot(
                 profile[k]["rbins"].in_units("kpc"),
                 profile[k]["density"],
                 color=colors[i],
-                label=data[1]+p_type[k],
+                label=data[1] + p_type[k],
             )
         i += 1
     for k in range(4):
