@@ -515,7 +515,7 @@ def distNIHAO(*args):
         )
 
         # Number density
-        rho = halo_g["rho"].in_units("cm**-3")
+        rho = halo_g["rho"].in_units("g cm**-3") / 1.67262192e-24
         axs[1, 0].hist(
             rho,
             bins=np.logspace(-6, 2, 100),
@@ -524,7 +524,6 @@ def distNIHAO(*args):
             alpha=0.5,
             label=data[1],
         )
-        # was halo_g["rho"].in_units("g cm**-3") / 1.67262192e-24
 
         # Temperature
         temp = halo_g["temp"]
