@@ -529,7 +529,7 @@ def map_nihao(*args):
         pynbody.analysis.angmom.faceon(h[1], cen=(0, 0, 0))
         pynbody.plot.stars.render(h[1].s, width="100 kpc", axes=axs[0, 0])
         pynbody.plot.image(
-            h[1].g, qty="rho", units="g cm^-3", width="100 kpc", cmap="Greys", ax=axs[0, 1]
+            h[1].g, qty="rho", units="g cm^-3", width="100 kpc", cmap="Greys", subplot=axs[0, 1]
         )  # 1,0
         # axs[0, 0].pynbody.plot.image(h[1].g, qty="temp", width="100 kpc") #1,1
         sph.image(
@@ -546,7 +546,7 @@ def map_nihao(*args):
         pynbody.analysis.angmom.sideon(h[1], cen=(0, 0, 0))
         pynbody.plot.stars.render(h[1].s, width="100 kpc", axes=axs[1, 0])
         pynbody.plot.image(
-            h[1].g, qty="rho", units="g cm^-3", width="100 kpc", cmap="Greys", ax=axs[1, 1]
+            h[1].g, qty="rho", units="g cm^-3", width="100 kpc", cmap="Greys", subplot=axs[1, 1]
         )  # 2,0
         # pynbody.plot.image(h[1].g, qty="temp", width="100 kpc") #2,1
         sph.image(
