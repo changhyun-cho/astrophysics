@@ -431,34 +431,34 @@ def dist_nihao(*args):
     for data in args:
         halo, halo_d, halo_s, halo_g, r_size = getPARTICLES(data[0])
         r_within = f.Sphere(r_size)
-        r_size = 20.0
+        r_size = "20.0 kpc"
 
         # create profiles object (by default this is a 3D profile)
         p_t = pynbody.analysis.profile.Profile(
             halo[r_within],
             rmin="0.1 kpc",
-            rmax=str(r_size) + " kpc",
+            rmax=r_size,
             ndim=3,
             type="log",
         )
         p_d = pynbody.analysis.profile.Profile(
             halo_d[r_within],
             rmin="0.1 kpc",
-            rmax=str(r_size) + " kpc",
+            rmax=r_size,
             ndim=3,
             type="log",
         )
         p_s = pynbody.analysis.profile.Profile(
             halo_s[r_within],
             rmin="0.1 kpc",
-            rmax=str(r_size) + " kpc",
+            rmax=r_size,
             ndim=3,
             type="log",
         )
         p_g = pynbody.analysis.profile.Profile(
             halo_g[r_within],
             rmin="0.1 kpc",
-            rmax=str(r_size) + " kpc",
+            rmax=r_size,
             ndim=3,
             type="log",
         )
@@ -499,7 +499,7 @@ def dist_nihao(*args):
     axs[2, 0].set_ylabel(r"$\rho$ [M$_{\odot}$ pc$^{-3}$]")
     for j in range(4):
         axs[0, j].set_xlabel("R [kpc]")
-        axs[0, j].set_xlim([1, r_size])
+        axs[0, j].set_xlim(left=1)
         axs[0, j].legend()
         for k in range(2):
             axs[k + 1, j].set_xlim(left=100)
@@ -508,3 +508,49 @@ def dist_nihao(*args):
             axs[k + 1, j].set_yscale("log")
             axs[k + 1, j].legend()
     plt.show()
+
+
+def map_niaho(*args):
+    for data in args:
+        fig, axs = plt.subplots(3, 2, figsize=(15, 10))
+        fig.suptitle(data[1])
+
+        s = pynbody.load(data[0])
+        s.physical_units()  # convert all units to something reasonable (kpc, Msol, etc)
+        h = s.halos()  # load the halos
+        pynbody.analysis.halo.center(h[1], mode="hyb", vel=True)
+
+        # face on, use this function
+        pynbody.analysis.angmom.faceon(h[1], cen=(0, 0, 0))
+        axs[0, 0].pynbody.plot.stars.render(h[1].s, width="100 kpc")
+        axs[0, 1].pynbody.plot.image(
+            h[1].g, qty="rho", units="g cm^-3", width="100 kpc", cmap="Greys"
+        )  # 1,0
+        # axs[0, 0].pynbody.plot.image(h[1].g, qty="temp", width="100 kpc") #1,1
+        axs[0, 2].sph.image(
+            h[1].g,
+            qty="temp",
+            width=50,
+            cmap="YlOrRd",
+            denoise=True,
+            approximate_fast=False,
+        )
+
+        # edge on, or use other things
+        pynbody.analysis.angmom.sideon(h[1], cen=(0, 0, 0))
+        axs[1, 0].pynbody.plot.stars.render(h[1].s, width="100 kpc")
+        axs[1, 1].pynbody.plot.image(
+            h[1].g, qty="rho", units="g cm^-3", width="100 kpc", cmap="Greys"
+        )  # 2,0
+        # pynbody.plot.image(h[1].g, qty="temp", width="100 kpc") #2,1
+        axs[1, 2].sph.image(
+            h[1].g,
+            qty="temp",
+            width=50,
+            cmap="YlOrRd",
+            denoise=True,
+            approximate_fast=False,
+        )
+        # s.rotate_x(90)
+        # s.rotate_x(-90)
+        plt.show()
