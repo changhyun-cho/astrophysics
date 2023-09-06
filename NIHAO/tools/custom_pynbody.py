@@ -527,7 +527,7 @@ def map_nihao(*args):
 
         # face on, use this function
         pynbody.analysis.angmom.faceon(h[1], cen=(0, 0, 0))
-        pynbody.plot.stars.render(h[1].s, width="100 kpc", ax=axs[0, 0])
+        pynbody.plot.stars.render(h[1].s, width="100 kpc", axes=axs[0, 0])
         pynbody.plot.image(
             h[1].g, qty="rho", units="g cm^-3", width="100 kpc", cmap="Greys", ax=axs[0, 1]
         )  # 1,0
@@ -544,7 +544,7 @@ def map_nihao(*args):
 
         # edge on, or use other things
         pynbody.analysis.angmom.sideon(h[1], cen=(0, 0, 0))
-        pynbody.plot.stars.render(h[1].s, width="100 kpc", ax=axs[1, 0])
+        pynbody.plot.stars.render(h[1].s, width="100 kpc", axes=axs[1, 0])
         pynbody.plot.image(
             h[1].g, qty="rho", units="g cm^-3", width="100 kpc", cmap="Greys", ax=axs[1, 1]
         )  # 2,0
