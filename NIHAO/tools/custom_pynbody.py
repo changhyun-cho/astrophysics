@@ -510,7 +510,7 @@ def dist_nihao(*args):
     plt.show()
 
 
-def map_niaho(*args):
+def map_nihao(*args):
     # See these links
     # https://pynbody.github.io/pynbody/tutorials/pictures.html
     # https://pynbody.github.io/pynbody/tutorials/halos.html
@@ -527,34 +527,36 @@ def map_niaho(*args):
 
         # face on, use this function
         pynbody.analysis.angmom.faceon(h[1], cen=(0, 0, 0))
-        axs[0, 0].pynbody.plot.stars.render(h[1].s, width="100 kpc")
-        axs[0, 1].pynbody.plot.image(
-            h[1].g, qty="rho", units="g cm^-3", width="100 kpc", cmap="Greys"
+        pynbody.plot.stars.render(h[1].s, width="100 kpc", ax=axs[0, 0])
+        pynbody.plot.image(
+            h[1].g, qty="rho", units="g cm^-3", width="100 kpc", cmap="Greys", ax=axs[0, 1]
         )  # 1,0
         # axs[0, 0].pynbody.plot.image(h[1].g, qty="temp", width="100 kpc") #1,1
-        axs[0, 2].sph.image(
+        sph.image(
             h[1].g,
             qty="temp",
             width=50,
             cmap="YlOrRd",
             denoise=True,
             approximate_fast=False,
+            ax=axs[0, 2],
         )
 
         # edge on, or use other things
         pynbody.analysis.angmom.sideon(h[1], cen=(0, 0, 0))
-        axs[1, 0].pynbody.plot.stars.render(h[1].s, width="100 kpc")
-        axs[1, 1].pynbody.plot.image(
-            h[1].g, qty="rho", units="g cm^-3", width="100 kpc", cmap="Greys"
+        pynbody.plot.stars.render(h[1].s, width="100 kpc", ax=axs[1, 0])
+        pynbody.plot.image(
+            h[1].g, qty="rho", units="g cm^-3", width="100 kpc", cmap="Greys", ax=axs[1, 1]
         )  # 2,0
         # pynbody.plot.image(h[1].g, qty="temp", width="100 kpc") #2,1
-        axs[1, 2].sph.image(
+        sph.image(
             h[1].g,
             qty="temp",
             width=50,
             cmap="YlOrRd",
             denoise=True,
             approximate_fast=False,
+            ax=axs[1, 2],
         )
         # s.rotate_x(90)
         # s.rotate_x(-90)
