@@ -323,7 +323,7 @@ def visual_nihao(*args):
     plt.show()
 
 
-def distNIHAO(*args):
+def dist_nihao(*args):
     def getPARTICLES(halo):
         s = pynbody.load(halo)
         s.physical_units()  # convert all units to something reasonable (kpc, Msol, etc)
