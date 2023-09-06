@@ -576,7 +576,7 @@ def distNIHAO(*args):
     for data in args:
         halo, halo_d, halo_s, halo_g, r_size = getPARTICLES(data[0])
         r_within = f.Sphere(r_size)
-        r_size = 50.0
+        r_size = 20.0
 
         # create profiles object (by default this is a 3D profile)
         p_t = pynbody.analysis.profile.Profile(
