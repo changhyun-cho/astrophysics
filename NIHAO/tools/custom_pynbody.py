@@ -628,8 +628,10 @@ def distNIHAO(*args):
     axs[2, 0].set_ylabel(r"$\rho$ [M$_{\odot}$ pc$^{-3}$]")
     for j in range(4):
         axs[0, j].set_xlabel("R [kpc]")
+        axs[0, j].set_xlim([1, r_size])
         axs[0, j].legend()
         for k in range(2):
+            axs[k + 1, j].set_xlim([100, r_size * 1000])
             axs[k + 1, j].set_xlabel("R [pc]")
             axs[k + 1, j].set_xscale("log")
             axs[k + 1, j].set_yscale("log")
