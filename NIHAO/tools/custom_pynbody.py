@@ -630,7 +630,7 @@ def distNIHAO(*args):
         axs[0, j].set_xlabel("R [kpc]")
         axs[0, j].set_xlim([1, r_size])
         axs[0, j].legend()
-        axs[1, j].set_ylim(bottom=1)
+        # axs[1, j].set_ylim(bottom=1)
         for k in range(2):
             axs[k + 1, j].set_xlim(left=100)
             axs[k + 1, j].set_xlabel("R [pc]")
