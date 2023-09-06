@@ -575,21 +575,21 @@ def distNIHAO(*args):
     i = 0
     for data in args:
         halo, halo_d, halo_s, halo_g, r_size = getPARTICLES(data[0])
-        r_size = 20.0
         r_within = f.Sphere(r_size)
+        r_size = 20.0
 
         # create profiles object (by default this is a 3D profile)
         p_t = pynbody.analysis.profile.Profile(
-            halo[r_within], rmin=0.01, rmax=r_size, ndim=3, type="log"
+            halo[r_within], rmin="0.1 kpc", rmax=str(r_size)+" kpc", ndim=3, type="log"
         )
         p_d = pynbody.analysis.profile.Profile(
-            halo_d[r_within], rmin=0.01, rmax=r_size, ndim=3, type="log"
+            halo_d[r_within], rmin="0.1 kpc", rmax=str(r_size)+" kpc", ndim=3, type="log"
         )
         p_s = pynbody.analysis.profile.Profile(
-            halo_s[r_within], rmin=0.01, rmax=r_size, ndim=3, type="log"
+            halo_s[r_within], rmin="0.1 kpc", rmax=str(r_size)+" kpc", ndim=3, type="log"
         )
         p_g = pynbody.analysis.profile.Profile(
-            halo_g[r_within], rmin=0.01, rmax=r_size, ndim=3, type="log"
+            halo_g[r_within], rmin="0.1 kpc", rmax=str(r_size)+" kpc", ndim=3, type="log"
         )
 
         profile = (p_t, p_d, p_s, p_g)
@@ -630,7 +630,6 @@ def distNIHAO(*args):
         axs[0, j].set_xlabel("R [kpc]")
         axs[0, j].set_xlim([1, r_size])
         axs[0, j].legend()
-        # axs[1, j].set_ylim(bottom=1)
         for k in range(2):
             axs[k + 1, j].set_xlim(left=100)
             axs[k + 1, j].set_xlabel("R [pc]")
