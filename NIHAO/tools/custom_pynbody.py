@@ -576,6 +576,7 @@ def distNIHAO(*args):
     for data in args:
         halo, halo_d, halo_s, halo_g, r_size = getPARTICLES(data[0])
         r_within = f.Sphere(r_size)
+        r_size = 50.0
 
         # create profiles object (by default this is a 3D profile)
         p_t = pynbody.analysis.profile.Profile(
@@ -616,7 +617,7 @@ def distNIHAO(*args):
         for k in range(4):
             axs[2, k].plot(
                 profile[k]["rbins"].in_units("pc"),
-                profile[k]["density"],
+                profile[k]["density"].in_units("Msol pc^-3"),
                 color=colors[i],
                 label=data[1] + " " + p_type[k],
             )
@@ -624,14 +625,13 @@ def distNIHAO(*args):
 
     axs[0, 0].set_ylabel(r"$v_{circ}$ [km s$^{-1}$]")
     axs[1, 0].set_ylabel(r"$\sigma_{0}$ [km s$^{-1}$]")
-    axs[2, 0].set_ylabel(r"$\rho$ [M$_{\odot}$ kpc$^{-3}$]")
+    axs[2, 0].set_ylabel(r"$\rho$ [M$_{\odot}$ pc$^{-3}$]")
     for j in range(4):
         axs[0, j].set_xlabel("R [kpc]")
+        axs[0, j].legend()
         for k in range(2):
             axs[k + 1, j].set_xlabel("R [pc]")
             axs[k + 1, j].set_xscale("log")
             axs[k + 1, j].set_yscale("log")
-    axs[0, 3].legend()
-    axs[1, 3].legend()
-    axs[2, 3].legend()
+            axs[k + 1, j].legend()
     plt.show()
