@@ -511,6 +511,11 @@ def dist_nihao(*args):
 
 
 def map_niaho(*args):
+    # See these links
+    # https://pynbody.github.io/pynbody/tutorials/pictures.html
+    # https://pynbody.github.io/pynbody/tutorials/halos.html
+    # https://pynbody.github.io/pynbody/tutorials/hmf.html
+
     for data in args:
         fig, axs = plt.subplots(3, 2, figsize=(15, 10))
         fig.suptitle(data[1])
