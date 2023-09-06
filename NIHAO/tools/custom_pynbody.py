@@ -527,11 +527,11 @@ def map_nihao(*args):
 
         # face on, use this function
         pynbody.analysis.angmom.faceon(h[1], cen=(0, 0, 0))
-        pynbody.plot.stars.render(h[1].s, width="100 kpc", axes=axs[0, 0])
+        pynbody.plot.stars.render(h[1].s, width="50 kpc", axes=axs[0, 0])
         pynbody.plot.image(
-            h[1].g, qty="rho", units="g cm^-3", width="100 kpc", cmap="Greys", subplot=axs[0, 1], threaded=False
+            h[1].g, qty="rho", units="g cm^-3", width="50 kpc", cmap="Greys", subplot=axs[0, 1], threaded=False
         )  # 1,0
-        # axs[0, 0].pynbody.plot.image(h[1].g, qty="temp", width="100 kpc") #1,1
+        # axs[0, 0].pynbody.plot.image(h[1].g, qty="temp", width="50 kpc") #1,1
         sph.image(
             h[1].g,
             qty="temp",
@@ -544,11 +544,11 @@ def map_nihao(*args):
 
         # edge on, or use other things
         pynbody.analysis.angmom.sideon(h[1], cen=(0, 0, 0))
-        pynbody.plot.stars.render(h[1].s, width="100 kpc", axes=axs[1, 0])
+        pynbody.plot.stars.render(h[1].s, width="50 kpc", axes=axs[1, 0])
         pynbody.plot.image(
-            h[1].g, qty="rho", units="g cm^-3", width="100 kpc", cmap="Greys", subplot=axs[1, 1], threaded=False
+            h[1].g, qty="rho", units="g cm^-3", width="50 kpc", cmap="Greys", subplot=axs[1, 1], threaded=False
         )  # 2,0
-        # pynbody.plot.image(h[1].g, qty="temp", width="100 kpc") #2,1
+        # pynbody.plot.image(h[1].g, qty="temp", width="50 kpc") #2,1
         sph.image(
             h[1].g,
             qty="temp",
