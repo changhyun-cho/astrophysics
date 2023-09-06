@@ -562,7 +562,8 @@ def map_niaho(*args):
 
 
 def plot_m_sigma(*args):
-    # For now, first value is BH mass, second
+    # For now, first value is BH mass, second sigma, and label
+    # but later, it should be merged to the basic data frame
     def get_m(v_disp):  # Equation (3) from Sahu et al. (2019)
         m = 6.1 * np.log10(v_disp) + 8.27
         return 10.0**m
