@@ -559,3 +559,18 @@ def map_niaho(*args):
         # s.rotate_x(90)
         # s.rotate_x(-90)
         plt.show()
+
+
+def plot_m_sigma(*args):
+    # For now, first value is BH mass, second
+    def get_m(v_disp):  # Equation (3) from Sahu et al. (2019)
+        m = 6.1 * np.log10(v_disp) + 8.27
+        return 10.0**m
+
+    sigma = np.logspace(1.4, 2.8, 100)
+    m_bh = get_m(10**sigma)
+
+    plt.plot(sigma, np.log10(m_bh), label=r"m-$\sigma$")
+    for data in args:
+        plt.scatter(np.log10(data[0]), np.log10(data[1]), label=data[2])
+    plt.show()
