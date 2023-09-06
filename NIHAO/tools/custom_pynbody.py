@@ -507,7 +507,7 @@ def distNIHAO(*args):
         mass = halo_g["mass"]
         axs[0, 0].hist(
             mass,
-            bins=np.logspace(5, np.log(np.max(mass)), 100),
+            bins=np.logspace(5, 7, 100),
             density=True,
             color=colors[i],
             alpha=0.5,
@@ -515,7 +515,7 @@ def distNIHAO(*args):
         )
 
         # Number density
-        rho = halo_g["rho"].in_units("g cm**-3") / 1.67262192e-24
+        rho = halo_g["rho"].in_units("cm**-3")
         axs[1, 0].hist(
             rho,
             bins=np.logspace(-6, 2, 100),
@@ -524,6 +524,7 @@ def distNIHAO(*args):
             alpha=0.5,
             label=data[1],
         )
+        # was halo_g["rho"].in_units("g cm**-3") / 1.67262192e-24
 
         # Temperature
         temp = halo_g["temp"]
@@ -541,7 +542,7 @@ def distNIHAO(*args):
         vel = get_vel(halo_g, r_bulge)
         axs[1, 1].hist(
             vel,
-            bins=np.logspace(0, np.log(np.max(vel)), 100),
+            bins=np.logspace(1.5, 3.5, 100),
             density=True,
             color=colors[i],
             alpha=0.5,
@@ -600,7 +601,7 @@ def distNIHAO(*args):
                 profile[k]["rbins"].in_units("kpc"),
                 profile[k]["v_circ"].in_units("km s^-1"),
                 color=colors[i],
-                label=data[1] + p_type[k],
+                label=data[1] + " " + p_type[k],
             )
 
         # velocity dispersions
@@ -609,7 +610,7 @@ def distNIHAO(*args):
                 profile[k]["rbins"].in_units("kpc"),
                 profile[k]["vr_disp"].in_units("km s^-1"),
                 color=colors[i],
-                label=data[1] + p_type[k],
+                label=data[1] + " " + p_type[k],
             )
 
         # 3D densities
@@ -618,13 +619,17 @@ def distNIHAO(*args):
                 profile[k]["rbins"].in_units("kpc"),
                 profile[k]["density"],
                 color=colors[i],
-                label=data[1] + p_type[k],
+                label=data[1] + " " + p_type[k],
             )
         i += 1
+
+    axs[0, 0].set_ylabel(r"$v_{circ}$ [km s$^{-1}$]")
+    axs[1, 0].set_ylabel(r"$\sigma_{0}$ [km s$^{-1}$]")
+    axs[2, 0].set_ylabel(r"$\rho$ [M$_{\odot}$ kpc$^{-3}$]")
     for k in range(4):
-        axs[0, k].set(xlabel="R [kpc]", ylabel=r"$v_{circ}$ [km s$^{-1}$]")
-        axs[1, k].set(xlabel="R [kpc]", ylabel=r"$\sigma_{0}$ [km s$^{-1}$]")
-        axs[2, k].set(xlabel="R [kpc]", ylabel=r"$\rho$ [M$_{\odot}$ kpc$^{-3}$]")
+        axs[0, k].set_xlabel("R [kpc]")
+        axs[1, k].set_xlabel("R [kpc]")
+        axs[2, k].set_xlabel("R [kpc]")
         axs[2, k].set_xscale("log")
         axs[2, k].set_yscale("log")
     axs[0, 3].legend()
