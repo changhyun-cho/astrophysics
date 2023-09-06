@@ -320,151 +320,148 @@ class analyzeNIHAO:
 
 
 def visual_nihao(*args):
+    fig, axs = plt.subplots(6, 2, figsize=(20, 10))
 
-    # Black hole mass vs. Stellar mass relation
     i = 0
     for data in args:
-        plt.step(data[0]["m_s"], data[0]["m_bh"], color=colors[i], label=data[1])
-        i += 1
-    plt.xlabel(r"$M_{*}$ [$M_{\odot}$]", fontsize=15)  #'Redshift (z)'
-    plt.ylabel(r"$M_{BH}$ [$M_{\odot}$]", fontsize=15)
-    # plt.xlim(1.0e9,1.0e11)
-    # plt.ylim(1.0e6,1.0e9)
-    plt.xscale("log")
-    plt.yscale("log")
-    plt.legend(fontsize=15)
-    plt.show()
-
-    # Black hole mass evolution
-    i = 0
-    for data in args:
-        plt.step(data[0]["t"], data[0]["m_bh"], color=colors[i], label=data[1])
-        i += 1
-    plt.xlabel("time [Gyr]", fontsize=15)  #'Redshift (z)'
-    plt.ylabel(r"$M_{BH}$ [$M_{\odot}$]", fontsize=15)
-    # plt.xlim(4,14)
-    plt.yscale("log")
-    plt.legend(fontsize=15)
-    plt.show()
-
-    # Stellar mass evolution
-    i = 0
-    for data in args:
-        plt.step(data[0]["t"], data[0]["m_s"], color=colors[i], label=data[1])
-        i += 1
-    plt.xlabel("time [Gyr]", fontsize=15)  #'Redshift (z)'
-    plt.ylabel(r"$M_{*}$ [$M_{\odot}$]", fontsize=15)
-    # plt.xlim(4,14)
-    plt.yscale("log")
-    plt.legend(fontsize=15)
-    plt.show()
-
-    # Gas mass evolution
-    i = 0
-    for data in args:
-        plt.step(data[0]["t"], data[0]["m_g"], color=colors[i], label=data[1])
-        i += 1
-    plt.xlabel("time [Gyr]", fontsize=15)  #'Redshift (z)'
-    plt.ylabel(r"$M_{gas}$ [$M_{\odot}$]", fontsize=15)
-    # plt.xlim(4,14)
-    plt.yscale("log")
-    plt.legend(fontsize=15)
-    plt.show()
-
-    # Gas mass evolution (Cold)
-    i = 0
-    for data in args:
-        plt.step(data[0]["t"], data[0]["m_g_cold"], color=colors[i], label=data[1])
-        i += 1
-    plt.xlabel("time [Gyr]", fontsize=15)  #'Redshift (z)'
-    plt.ylabel(r"$M_{gas, cold}$ [$M_{\odot}$]", fontsize=15)
-    # plt.xlim(4,14)
-    plt.yscale("log")
-    plt.legend(fontsize=15)
-    plt.show()
-
-    # Gas mass evolution (Hot)
-    i = 0
-    for data in args:
-        plt.step(data[0]["t"], data[0]["m_g_hot"], color=colors[i], label=data[1])
-        i += 1
-    plt.xlabel("time [Gyr]", fontsize=15)  #'Redshift (z)'
-    plt.ylabel(r"$M_{gas, hot}$ [$M_{\odot}$]", fontsize=15)
-    # plt.xlim(4,14)
-    plt.yscale("log")
-    plt.legend(fontsize=15)
-    plt.show()
-
-    # Star formation history
-    i = 0
-    for data in args:
-        plt.step(data[0]["t"], data[0]["sfh"], color=colors[i], label=data[1])
-        i += 1
-    plt.xlabel("time [Gyr]", fontsize=15)  #'Redshift (z)'
-    plt.ylabel(r"SFR [$M_{\odot}/yr$]", fontsize=15)
-    plt.yscale("log")
-    plt.legend(fontsize=15)
-    plt.show()
-
-    # Accretion rate history
-    i = 0
-    for data in args:
-        plt.plot(data[0]["t"], data[0]["mdot"], color=colors[i], label=data[1])
-        i += 1
-    plt.xlabel("time [Gyr]", fontsize=15)  #'Redshift (z)'
-    plt.ylabel(r"$\dot{M}$ [$M_{\odot}/yr$]", fontsize=15)
-    plt.yscale("log")
-    plt.legend(fontsize=15)
-    plt.show()
-
-    # Eddington ratio history
-    i = 0
-    for data in args:
-        plt.plot(
+        axs[0, 0].step(data[0]["t"], data[0]["m_bh"], color=colors[i], label=data[1])
+        axs[0, 1].step(data[0]["t"], data[0]["m_s"], color=colors[i], label=data[1])
+        axs[1, 0].step(data[0]["t"], data[0]["m_g"], color=colors[i], label=data[1])
+        axs[1, 1].step(
+            data[0]["t"], data[0]["m_g_cold"], color=colors[i], label=data[1]
+        )
+        axs[2, 0].step(data[0]["t"], data[0]["m_g_hot"], color=colors[i], label=data[1])
+        axs[2, 1].step(data[0]["t"], data[0]["sfh"], color=colors[i], label=data[1])
+        axs[3, 0].plot(data[0]["t"], data[0]["mdot"], color=colors[i], label=data[1])
+        axs[3, 1].plot(
             data[0]["t"],
             data[0]["mdot"] / data[0]["mdotedd"],
             color=colors[i],
             label=data[1],
         )
+        axs[4, 0].step(data[0]["t"], data[0]["sftlen"], color=colors[i], label=data[1])
+        axs[4, 1].step(data[0]["t"], data[0]["n_g"], color=colors[i], label=data[1])
+        axs[5, 0].step(data[0]["t"], data[0]["n_s"], color=colors[i], label=data[1])
+        axs[5, 1].step(data[0]["m_s"], data[0]["m_bh"], color=colors[i], label=data[1])
         i += 1
-    plt.xlabel("time [Gyr]", fontsize=15)  #'Redshift (z)'
-    plt.ylabel(r"$\dot{m}$ [$M_{\odot}/yr$]", fontsize=15)
-    plt.yscale("log")
-    plt.legend(fontsize=15)
-    plt.axhline(y=0.05, color="purple", linestyle="-")
-    plt.show()
 
-    # Softening length
-    i = 0
-    for data in args:
-        plt.step(data[0]["t"], data[0]["sftlen"], color=colors[i], label=data[1])
-        i += 1
-    plt.xlabel("time [Gyr]", fontsize=15)  #'Redshift (z)'
-    plt.ylabel(r"$h_{sft}$ [$kpc$]", fontsize=15)
-    plt.yscale("log")
-    plt.legend(fontsize=15)
-    plt.show()
+    axs[0, 0].set_xlabel(
+        "time [Gyr]",
+    )  #'Redshift (z)'
+    axs[0, 0].set_ylabel(
+        r"$M_{BH}$ [$M_{\odot}$]",
+    )
+    # axs[0, 0].xlim(4,14)
+    axs[0, 0].set_yscale("log")
+    axs[0, 0].legend()
 
-    # Number of gas particles
-    i = 0
-    for data in args:
-        plt.step(data[0]["t"], data[0]["n_g"], color=colors[i], label=data[1])
-        i += 1
-    plt.xlabel("time [Gyr]", fontsize=15)  #'Redshift (z)'
-    plt.ylabel(r"$n_{gas}$", fontsize=15)
-    plt.yscale("log")
-    plt.legend(fontsize=15)
-    plt.show()
+    axs[0, 1].set_xlabel(
+        "time [Gyr]",
+    )  #'Redshift (z)'
+    axs[0, 1].set_ylabel(
+        r"$M_{*}$ [$M_{\odot}$]",
+    )
+    # axs[0, 1].xlim(4,14)
+    axs[0, 1].set_yscale("log")
+    axs[0, 1].legend()
 
-    # Number of star particles
-    i = 0
-    for data in args:
-        plt.step(data[0]["t"], data[0]["n_s"], color=colors[i], label=data[1])
-        i += 1
-    plt.xlabel("time [Gyr]", fontsize=15)  #'Redshift (z)'
-    plt.ylabel(r"$n_{*}$", fontsize=15)
-    plt.yscale("log")
-    plt.legend(fontsize=15)
+    axs[1, 0].set_xlabel(
+        "time [Gyr]",
+    )  #'Redshift (z)'
+    axs[1, 0].set_ylabel(
+        r"$M_{gas}$ [$M_{\odot}$]",
+    )
+    # axs[1, 0].xlim(4,14)
+    axs[1, 0].set_yscale("log")
+    axs[1, 0].legend()
+
+    axs[1, 1].set_xlabel(
+        "time [Gyr]",
+    )  #'Redshift (z)'
+    axs[1, 1].set_ylabel(
+        r"$M_{gas, cold}$ [$M_{\odot}$]",
+    )
+    # axs[1, 1].xlim(4,14)
+    axs[1, 1].set_yscale("log")
+    axs[1, 1].legend()
+
+    axs[2, 0].set_xlabel(
+        "time [Gyr]",
+    )  #'Redshift (z)'
+    axs[2, 0].set_ylabel(
+        r"$M_{gas, hot}$ [$M_{\odot}$]",
+    )
+    # axs[2, 0].xlim(4,14)
+    axs[2, 0].set_yscale("log")
+    axs[2, 0].legend()
+
+    axs[2, 1].set_xlabel(
+        "time [Gyr]",
+    )  #'Redshift (z)'
+    axs[2, 1].set_ylabel(
+        r"SFR [$M_{\odot}/yr$]",
+    )
+    axs[2, 1].set_yscale("log")
+    axs[2, 1].legend()
+
+    axs[3, 0].set_xlabel(
+        "time [Gyr]",
+    )  #'Redshift (z)'
+    axs[3, 0].set_ylabel(
+        r"$\dot{M}$ [$M_{\odot}/yr$]",
+    )
+    axs[3, 0].set_yscale("log")
+    axs[3, 0].legend()
+
+    axs[3, 1].set_xlabel(
+        "time [Gyr]",
+    )  #'Redshift (z)'
+    axs[3, 1].set_ylabel(
+        r"$\dot{m}$ [$M_{\odot}/yr$]",
+    )
+    axs[3, 1].set_yscale("log")
+    axs[3, 1].legend()
+    axs[3, 1].axhline(y=0.05, color="purple", linestyle="-")
+
+    axs[4, 0].set_xlabel(
+        "time [Gyr]",
+    )  #'Redshift (z)'
+    axs[4, 0].set_ylabel(
+        r"$h_{sft}$ [$kpc$]",
+    )
+    axs[4, 0].set_yscale("log")
+    axs[4, 0].legend()
+
+    axs[4, 1].set_xlabel(
+        "time [Gyr]",
+    )  #'Redshift (z)'
+    axs[4, 1].set_ylabel(
+        r"$n_{gas}$",
+    )
+    axs[4, 1].set_yscale("log")
+    axs[4, 1].legend()
+
+    axs[5, 0].set_xlabel(
+        "time [Gyr]",
+    )  #'Redshift (z)'
+    axs[5, 0].set_ylabel(
+        r"$n_{*}$",
+    )
+    axs[5, 0].set_yscale("log")
+    axs[5, 0].legend()
+
+    axs[5, 1].set_xlabel(
+        r"$M_{*}$ [$M_{\odot}$]",
+    )  #'Redshift (z)'
+    axs[5, 1].set_ylabel(
+        r"$M_{BH}$ [$M_{\odot}$]",
+    )
+    # axs[5, 1].xlim(1.0e9,1.0e11)
+    # axs[5, 1].ylim(1.0e6,1.0e9)
+    axs[5, 1].set_xscale("log")
+    axs[5, 1].set_yscale("log")
+    axs[5, 1].legend()
+
     plt.show()
 
 
@@ -552,7 +549,7 @@ def distNIHAO(*args):
     axs[0, 0].set(xlabel=r"mass [$M_{\odot}$]", ylabel="frequency")
     axs[0, 0].set_xscale("log")
     axs[0, 0].set_yscale("log")
-    axs[0, 0].legend()  # fontsize=15
+    axs[0, 0].legend()  #
 
     axs[1, 0].set(xlabel=r"number density [cm$^{-3}$]", ylabel="frequency")
     axs[1, 0].set_xscale("log")
@@ -580,16 +577,32 @@ def distNIHAO(*args):
 
         # create profiles object (by default this is a 3D profile)
         p_t = pynbody.analysis.profile.Profile(
-            halo[r_within], rmin="0.1 kpc", rmax=str(r_size)+" kpc", ndim=3, type="log"
+            halo[r_within],
+            rmin="0.1 kpc",
+            rmax=str(r_size) + " kpc",
+            ndim=3,
+            type="log",
         )
         p_d = pynbody.analysis.profile.Profile(
-            halo_d[r_within], rmin="0.1 kpc", rmax=str(r_size)+" kpc", ndim=3, type="log"
+            halo_d[r_within],
+            rmin="0.1 kpc",
+            rmax=str(r_size) + " kpc",
+            ndim=3,
+            type="log",
         )
         p_s = pynbody.analysis.profile.Profile(
-            halo_s[r_within], rmin="0.1 kpc", rmax=str(r_size)+" kpc", ndim=3, type="log"
+            halo_s[r_within],
+            rmin="0.1 kpc",
+            rmax=str(r_size) + " kpc",
+            ndim=3,
+            type="log",
         )
         p_g = pynbody.analysis.profile.Profile(
-            halo_g[r_within], rmin="0.1 kpc", rmax=str(r_size)+" kpc", ndim=3, type="log"
+            halo_g[r_within],
+            rmin="0.1 kpc",
+            rmax=str(r_size) + " kpc",
+            ndim=3,
+            type="log",
         )
 
         profile = (p_t, p_d, p_s, p_g)
