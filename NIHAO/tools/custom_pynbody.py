@@ -179,7 +179,7 @@ class analyzeNIHAO:
 
 
 def visual_nihao(*args):
-    fig, axs = plt.subplots(6, 2, figsize=(20, 10))
+    fig, axs = plt.subplots(6, 2, figsize=(10, 20))
 
     i = 0
     for data in args:
