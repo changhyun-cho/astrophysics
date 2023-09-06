@@ -10,12 +10,12 @@ import distinctipy
 import pynbody
 import pynbody.filt as f
 
-N = 64
+N = 128
 pynbody.config["centering-scheme"] = "ssc"
 pynbody.config["number_of_threads"] = N
 os.environ["OMP_NUM_THREADS"] = str(N)
 
-# generate 10 visually distinct colours
+# generate 20 visually distinct colours
 colors = distinctipy.get_colors(20)
 
 
@@ -127,12 +127,10 @@ class analyzeNIHAO:
                         ]
                     )
                 except Exception:
-                    print(
-                        "Warning from " + self.file + ": No black holes generated yet!"
-                    )
+                    print(f"Warning from {self.file}: No black holes generated yet!")
 
             except Exception:
-                print("Error at " + self.file + ": Could not find the central halo!")
+                print(f"Error at {self.file}: Could not find the central halo!")
 
         self.t_beg = self.df["t"][0]
         self.t_end = self.df["t"][self.n_file - 1]
@@ -176,7 +174,7 @@ class analyzeNIHAO:
         )
 
         print(
-            "Saving data at " + self.dir + self.m_sim + ".csv"
+            f"Saving data at {self.dir}{self.m_sim}.csv"
         )  # self.dir+self.m_sim+'.csv' #self.outdir+self.m_sim+'.csv'
 
 
