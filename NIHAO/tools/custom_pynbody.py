@@ -476,20 +476,20 @@ def distNIHAO(*args):
         try:
             pynbody.analysis.halo.center(h[1], mode="hyb", vel=True)
             pynbody.analysis.angmom.faceon(h[1])
-            r_bulge = "5 kpc"
+            r_size = "5 kpc"
         except Exception:
             print(
                 "Error: Cannot face-on! Might be an elliptical galaxy. Will center it."
             )
             pynbody.analysis.halo.center(h[1], mode="hyb", vel=True)
-            r_bulge = "10 kpc"
+            r_size = "10 kpc"
         h_g = h[1].gas
         h_s = h[1].star
         h_d = h[1].dm
-        return (h[1], h_d, h_s, h_g, r_bulge)
+        return (h[1], h_d, h_s, h_g, r_size)
 
-    def get_vel(halo, r_bulge):
-        r_within = f.Sphere(r_bulge)
+    def get_vel(halo, r_size):
+        r_within = f.Sphere(r_size)
         particle = halo[r_within]
         vel = np.sqrt(
             particle["vx"] * particle["vx"]
@@ -502,7 +502,7 @@ def distNIHAO(*args):
     fig, axs = plt.subplots(2, 2, figsize=(15, 10))
     i = 0
     for data in args:
-        halo, halo_d, halo_s, halo_g, r_bulge = getPARTICLES(data[0])
+        halo, halo_d, halo_s, halo_g, r_size = getPARTICLES(data[0])
         # Particle mass
         mass = halo_g["mass"]
         axs[0, 0].hist(
@@ -538,7 +538,7 @@ def distNIHAO(*args):
         )
 
         # Velocity
-        vel = get_vel(halo_g, r_bulge)
+        vel = get_vel(halo_g, r_size)
         axs[1, 1].hist(
             vel,
             bins=np.logspace(1.5, 3.5, 100),
@@ -574,21 +574,21 @@ def distNIHAO(*args):
     fig, axs = plt.subplots(3, 4, figsize=(15, 15))
     i = 0
     for data in args:
-        halo, halo_d, halo_s, halo_g, r_bulge = getPARTICLES(data[0])
-        r_within = f.Sphere(r_bulge)
+        halo, halo_d, halo_s, halo_g, r_size = getPARTICLES(data[0])
+        r_within = f.Sphere(r_size)
 
         # create profiles object (by default this is a 3D profile)
         p_t = pynbody.analysis.profile.Profile(
-            halo[r_within], rmin=0.01, rmax=50, ndim=3
+            halo[r_within], rmin=0.01, rmax=r_size, ndim=3, type="log"
         )
         p_d = pynbody.analysis.profile.Profile(
-            halo_d[r_within], rmin=0.01, rmax=50, ndim=3
+            halo_d[r_within], rmin=0.01, rmax=r_size, ndim=3, type="log"
         )
         p_s = pynbody.analysis.profile.Profile(
-            halo_s[r_within], rmin=0.01, rmax=50, ndim=3
+            halo_s[r_within], rmin=0.01, rmax=r_size, ndim=3, type="log"
         )
         p_g = pynbody.analysis.profile.Profile(
-            halo_g[r_within], rmin=0.01, rmax=50, ndim=3
+            halo_g[r_within], rmin=0.01, rmax=r_size, ndim=3, type="log"
         )
 
         profile = (p_t, p_d, p_s, p_g)
@@ -606,7 +606,7 @@ def distNIHAO(*args):
         # velocity dispersions
         for k in range(4):
             axs[1, k].plot(
-                profile[k]["rbins"].in_units("kpc"),
+                profile[k]["rbins"].in_units("pc"),
                 profile[k]["vr_disp"].in_units("km s^-1"),
                 color=colors[i],
                 label=data[1] + " " + p_type[k],
@@ -615,7 +615,7 @@ def distNIHAO(*args):
         # 3D densities
         for k in range(4):
             axs[2, k].plot(
-                profile[k]["rbins"].in_units("kpc"),
+                profile[k]["rbins"].in_units("pc"),
                 profile[k]["density"],
                 color=colors[i],
                 label=data[1] + " " + p_type[k],
@@ -625,12 +625,12 @@ def distNIHAO(*args):
     axs[0, 0].set_ylabel(r"$v_{circ}$ [km s$^{-1}$]")
     axs[1, 0].set_ylabel(r"$\sigma_{0}$ [km s$^{-1}$]")
     axs[2, 0].set_ylabel(r"$\rho$ [M$_{\odot}$ kpc$^{-3}$]")
-    for k in range(4):
-        axs[0, k].set_xlabel("R [kpc]")
-        axs[1, k].set_xlabel("R [kpc]")
-        axs[2, k].set_xlabel("R [kpc]")
-        axs[2, k].set_xscale("log")
-        axs[2, k].set_yscale("log")
+    for j in range(4):
+        axs[0, j].set_xlabel("R [kpc]")
+        for k in range(2):
+            axs[k + 1, j].set_xlabel("R [pc]")
+            axs[k + 1, j].set_xscale("log")
+            axs[k + 1, j].set_yscale("log")
     axs[0, 3].legend()
     axs[1, 3].legend()
     axs[2, 3].legend()
