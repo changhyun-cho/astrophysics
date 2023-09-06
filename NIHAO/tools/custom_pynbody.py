@@ -1,6 +1,5 @@
 import os
 import os.path
-import math
 
 import numpy as np
 import pandas as pd
@@ -9,8 +8,6 @@ import matplotlib.pyplot as plt
 import distinctipy
 
 import pynbody
-import pynbody.units as un
-import pynbody.array as pa
 import pynbody.filt as f
 
 N = 64
@@ -53,12 +50,6 @@ class analyzeNIHAO:
             ("n_g", float),
             ("n_bh", float),
             ("n_dm", float),
-            ("mdotbondi", float),
-            ("rho", float),
-            ("r_bondi", float),
-            ("cs", float),
-            ("h_smooth", float),
-            ("half_m_r", float),
         ]
         self.df = pd.DataFrame(np.zeros(self.n_file, dtype=self.dt))
         # can be used for many halos in the future!
@@ -73,128 +64,12 @@ class analyzeNIHAO:
         stars = h[1].star[starf]
         binnorm = 1e-9 * bins / (t_end - t_beg)
         tforms = stars["tform"].in_units("Gyr")
-        # try:
         weight = stars["massform"].in_units("Msol") * binnorm
-        # except:
-        #    weight = stars["mass"].in_units("Msol") * binnorm
         sfh, sfhbines = np.histogram(
             tforms, range=(t_beg, t_end), weights=weight, bins=bins
         )
         sfhtimes = 0.5 * (sfhbines[1:] + sfhbines[:-1])
         return sfh, sfhtimes
-
-    def center_avd(self, sim):
-        pynbody.analysis.halo.center(sim, vel=False)
-        cen_size = "1 kpc"
-        fr = pynbody.filt.Sphere(cen_size)
-        if len(sim.s[fr]) < 5 and len(sim.d[fr]) < 5 and len(sim.g[fr]) < 5:
-            cen_size = self.h_smooth(sim.d, N=5)
-            if len(sim.s) >= 5:
-                cen_size = np.min([cen_size, self.h_smooth(sim.s, N=5)])
-            if len(sim.g) >= 5:
-                cen_size = np.min([cen_size, self.h_smooth(sim.g, N=5)])
-        pynbody.analysis.halo.vel_center(sim, cen_size=cen_size)
-
-    def half_mass_r(self, sim, cen=True, cylindrical=False):
-
-        if cen:
-            self.center_avd(sim)
-
-        half_mass = sim["mass"].sum() * 0.5
-
-        if cylindrical:
-            coord = "rxy"
-        else:
-            coord = "r"
-
-        X = sorted(zip(sim[coord], sim["mass"]), key=lambda pair: pair[0])
-        mass = 0.0
-
-        for k in range(len(X)):
-            mass += X[k][1]
-            if mass >= half_mass:
-                break
-
-        return pa.SimArray(X[k][0], sim[coord].units)
-
-    def h_smooth(self, sim, pos=(0, 0, 0), N=50):
-        if len(sim) < N or N == 0:
-            return pa.SimArray(np.nan, "Mpc")
-        r = pa.SimArray(
-            np.sort(np.linalg.norm(sim["pos"] - pos, axis=1)), sim["pos"].units
-        )
-        if len(sim) == N:
-            return pa.SimArray(r[N - 1], r.units)
-        return pa.SimArray(0.5 * (r[N] + r[N - 1]), r.units)
-
-    def kernel(self, x):
-        if x <= 0:
-            w = (21 / 16.0) * (1 - 0.0454684)
-        else:
-            u = np.sqrt(x * 0.25)
-            w = 1 - u
-            w = w * w
-            w = w * w
-            w = (21 / 16.0) * w * (1 + 4 * u)
-        return w
-
-    def kernel2(self, x):
-        u = np.sqrt(x * 0.25)
-        w = 1 - u
-        w = w * w
-        w = w * w
-        w = (21 / 16.0) * w * (1 + 4 * u)
-        return w
-
-    def mdotbondi(self, sim, bh, N=50, alpha=100, aDot=0):
-        # if (len(self.bh)==0): return np.nan, np.nan, np.nan, np.nan, np.nan
-        # self.aDot *= 100*un.a*un.km/(un.s*un.Mpc)
-
-        pos2 = [bh["pos"][0][0], bh["pos"][0][1], bh["pos"][0][2]]
-        vel2 = [bh["vel"][0][0], bh["vel"][0][1], bh["vel"][0][2]]
-        sim["pos"] -= pos2
-        sim["vel"] -= vel2
-
-        mass = bh[0]["mass"]
-
-        hs = self.h_smooth(sim.g, bh["pos"][0])
-        hhs = hs / 2
-        filt_smooth = f.LowPass("r", hs)
-        gas = sim.g[filt_smooth]
-
-        r2 = gas["r"] * gas["r"] / (hhs * hhs)
-        w = self.kernel2(r2)
-        v2 = gas["v2"]
-
-        # v2 = ((gas['vel']-aDot*gas['pos'])*(gas['vel']-aDot*gas['pos'])).sum(axis=1)
-        vels2 = v2 + gas["cs"] * gas["cs"]
-        ssum = np.sum(w * gas["mass"] / (vels2 * np.sqrt(vels2)))
-        mdot = (
-            4.0
-            * math.pi
-            * alpha
-            * un.G
-            * un.G
-            * mass
-            * mass
-            * ssum
-            / (math.pi * hhs * hhs * hhs)
-        )
-
-        rho = np.sum(w * gas["mass"]) / (math.pi * hhs * hhs * hhs)
-        cs = np.sum(w * gas["cs"]) / sum(w)
-        r_bondi = 2 * mass * un.G / (cs * cs)
-
-        sim["pos"] += pos2
-        sim["vel"] += vel2
-
-        return (
-            mdot.in_units("Msol yr**-1"),
-            rho.in_units("Msol kpc**-3"),
-            r_bondi.in_units("kpc"),
-            cs.in_units("km s**-1"),
-            hs.in_units("kpc"),
-        )
 
     def generateData(self):
 
@@ -254,20 +129,6 @@ class analyzeNIHAO:
                 except Exception:
                     print(
                         "Warning from " + self.file + ": No black holes generated yet!"
-                    )
-
-                if len(self.bhs) != 0:
-                    (
-                        self.df["mdotbondi"][i],
-                        self.df["rho"][i],
-                        self.df["r_bondi"][i],
-                        self.df["cs"][i],
-                        self.df["h_smooth"][i],
-                    ) = self.mdotbondi(self.h[1], self.bhs[self.i_bh], N=50, alpha=70)
-
-                if len(self.h[1].star) != 0:
-                    self.df["half_m_r"][i] = self.half_mass_r(
-                        self.h[1].star, cen=False, cylindrical=True
                     )
 
             except Exception:
@@ -461,7 +322,6 @@ def visual_nihao(*args):
     axs[5, 1].set_xscale("log")
     axs[5, 1].set_yscale("log")
     axs[5, 1].legend()
-
     plt.show()
 
 
