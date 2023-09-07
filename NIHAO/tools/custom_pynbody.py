@@ -5,10 +5,12 @@ import numpy as np
 import pandas as pd
 
 import matplotlib.pyplot as plt
+from matplotlib import rc
 import distinctipy
 
 import pynbody
 import pynbody.filt as f
+import pynbody.plot.sph as sph
 
 N = 128
 pynbody.config["centering-scheme"] = "ssc"
@@ -17,6 +19,10 @@ os.environ["OMP_NUM_THREADS"] = str(N)
 
 # generate 20 visually distinct colours
 colors = distinctipy.get_colors(20)
+
+# Set the font family to Times
+rc("font", family="serif")
+rc("text", usetex=True)
 
 
 class analyzeNIHAO:
@@ -529,7 +535,13 @@ def map_nihao(*args):
         pynbody.analysis.angmom.faceon(h[1], cen=(0, 0, 0))
         pynbody.plot.stars.render(h[1].s, width="5 kpc", axes=axs[0, 0])
         pynbody.plot.image(
-            h[1].g, qty="rho", units="g cm^-3", width="5 kpc", cmap="Greys", subplot=axs[0, 1], threaded=False
+            h[1].g,
+            qty="rho",
+            units="g cm^-3",
+            width="5 kpc",
+            cmap="Greys",
+            subplot=axs[0, 1],
+            threaded=False,
         )  # 1,0
         # axs[0, 0].pynbody.plot.image(h[1].g, qty="temp", width="5 kpc") #1,1
         sph.image(
@@ -546,7 +558,13 @@ def map_nihao(*args):
         pynbody.analysis.angmom.sideon(h[1], cen=(0, 0, 0))
         pynbody.plot.stars.render(h[1].s, width="5 kpc", axes=axs[1, 0])
         pynbody.plot.image(
-            h[1].g, qty="rho", units="g cm^-3", width="5 kpc", cmap="Greys", subplot=axs[1, 1], threaded=False
+            h[1].g,
+            qty="rho",
+            units="g cm^-3",
+            width="5 kpc",
+            cmap="Greys",
+            subplot=axs[1, 1],
+            threaded=False,
         )  # 2,0
         # pynbody.plot.image(h[1].g, qty="temp", width="5 kpc") #2,1
         sph.image(
