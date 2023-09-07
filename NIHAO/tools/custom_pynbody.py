@@ -4,8 +4,8 @@ import os.path
 import numpy as np
 import pandas as pd
 
+import matplotlib
 import matplotlib.pyplot as plt
-from matplotlib import rc
 import distinctipy
 
 import pynbody
@@ -20,9 +20,12 @@ os.environ["OMP_NUM_THREADS"] = str(N)
 # generate 20 visually distinct colours
 colors = distinctipy.get_colors(20)
 
-# Set the font family to Times
-rc("font", family="serif")
-rc("text", usetex=True)
+# Set universal font properties
+matplotlib.rcParams[
+    "font.family"
+] = "serif"  # Font family (e.g., 'serif', 'sans-serif', 'monospace')
+matplotlib.rcParams["text.usetex"] = True
+dpi = 500
 
 
 class analyzeNIHAO:
@@ -185,7 +188,7 @@ class analyzeNIHAO:
 
 
 def visual_nihao(*args):
-    fig, axs = plt.subplots(6, 2, figsize=(10, 20))
+    fig, axs = plt.subplots(6, 2, figsize=(10, 20), dpi=dpi)
 
     i = 0
     for data in args:
@@ -360,7 +363,7 @@ def dist_nihao(*args):
         return vel
 
     # Figure settings
-    fig, axs = plt.subplots(2, 2, figsize=(15, 10))
+    fig, axs = plt.subplots(2, 2, figsize=(15, 10), dpi=dpi)
     i = 0
     for data in args:
         halo, halo_d, halo_s, halo_g, r_size = getPARTICLES(data[0])
@@ -432,7 +435,7 @@ def dist_nihao(*args):
     plt.show()
 
     # Profiles
-    fig, axs = plt.subplots(3, 4, figsize=(15, 15))
+    fig, axs = plt.subplots(3, 4, figsize=(15, 15), dpi=dpi)
     i = 0
     for data in args:
         halo, halo_d, halo_s, halo_g, r_size = getPARTICLES(data[0])
