@@ -588,13 +588,13 @@ def plot_m_sigma(*args):
     # For now, first value is BH mass, second sigma, and label
     # but later, it should be merged to the basic data frame
     def get_m(v_disp):  # Equation (3) from Sahu et al. (2019)
-        m = 6.1 * np.log10(v_disp) + 8.27
+        m = 6.1 * np.log10(v_disp/200.0) + 8.27
         return 10.0**m
 
     sigma = np.logspace(1.4, 2.8, 100)
-    m_bh = get_m(10**sigma)
+    m_bh = get_m(sigma)
 
-    plt.plot(sigma, np.log10(m_bh), label=r"m-$\sigma$")
+    plt.plot(np.log10(sigma), np.log10(m_bh), label=r"m-$\sigma$")
     for data in args:
         plt.scatter(np.log10(data[0]), np.log10(data[1]), label=data[2])
     plt.show()
