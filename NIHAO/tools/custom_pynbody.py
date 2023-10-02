@@ -163,13 +163,12 @@ class analyzeNIHAO:
         print("Analysis complete.")
 
     def readData(self):
-        if os.path.isfile(
-            self.dir + self.m_sim + ".csv"
-        ):  # self.dir+self.m_sim+'.csv' #self.outdir+self.m_sim+'.csv'
+        outfile = self.dir + self.m_sim + ".csv"
+        if os.path.isfile(outfile):
+            # self.dir+self.m_sim+'.csv' #self.outdir+self.m_sim+'.csv'
             print("Data file found! I will read it.")
-            self.df = pd.read_csv(
-                self.dir + self.m_sim + ".csv"
-            )  # self.dir+self.m_sim+'.csv' #self.outdir+self.m_sim+'.csv'
+            self.df = pd.read_csv(outfile)
+            # self.dir+self.m_sim+'.csv' #self.outdir+self.m_sim+'.csv'
         else:
             print("Since there is no data file, I will read the snapshots.")
             self.generateData()
@@ -588,7 +587,7 @@ def plot_m_sigma(*args):
     # For now, first value is BH mass, second sigma, and label
     # but later, it should be merged to the basic data frame
     def get_m(v_disp):  # Equation (3) from Sahu et al. (2019)
-        m = 6.1 * np.log10(v_disp/200.0) + 8.27
+        m = 6.1 * np.log10(v_disp / 200.0) + 8.27
         return 10.0**m
 
     sigma = np.logspace(1.4, 2.8, 100)
