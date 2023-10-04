@@ -324,7 +324,6 @@ def visual_nihao(*args):
     axs[5, 1].fill_between(
         m_s_rel, m_bh_rel * (1.0 - dex), m_bh_rel * (1.0 + dex), color="gray", alpha=0.3
     )
-    axs[5, 1].plot(data[0]["m_s"], data[0]["m_bh"], color=colors[i], label=data[1])
     axs[5, 1].set_xlabel(
         r"$M_{*}$ [$M_{\odot}$]",
     )  #'Redshift (z)'
