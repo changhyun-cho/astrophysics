@@ -317,6 +317,14 @@ def visual_nihao(*args):
     axs[5, 0].set_yscale("log")
     axs[5, 0].legend()
 
+    m_s_rel = np.logspace(7.5, 11.5, 100)
+    m_bh_rel = 0.49e9 * (m_s_rel / 1.0e11) ** 1.17
+    dex = 0.28
+    axs[5, 1].plot(m_s_rel, m_bh_rel, label="Kormendy \& Ho (2013)", color="gray")
+    axs[5, 1].fill_between(
+        m_s_rel, m_bh_rel * (1.0 - dex), m_bh_rel * (1.0 + dex), color="gray", alpha=0.3
+    )
+    axs[5, 1].plot(data[0]["m_s"], data[0]["m_bh"], color=colors[i], label=data[1])
     axs[5, 1].set_xlabel(
         r"$M_{*}$ [$M_{\odot}$]",
     )  #'Redshift (z)'
