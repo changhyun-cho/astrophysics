@@ -320,7 +320,9 @@ def visual_nihao(*args):
     m_s_rel = np.logspace(7.5, 11.5, 100)
     m_bh_rel = 0.49e9 * (m_s_rel / 1.0e11) ** 1.17
     dex = 0.28
-    axs[5, 1].plot(m_s_rel, m_bh_rel, label="Kormendy \& Ho (2013)", color="gray")
+    axs[5, 1].plot(
+        m_s_rel, m_bh_rel, label="Kormendy \& Ho (2013)", color="gray", linewidth=1
+    )
     axs[5, 1].fill_between(
         m_s_rel, m_bh_rel * (1.0 - dex), m_bh_rel * (1.0 + dex), color="gray", alpha=0.3
     )
@@ -330,8 +332,8 @@ def visual_nihao(*args):
     axs[5, 1].set_ylabel(
         r"$M_{BH}$ [$M_{\odot}$]",
     )
-    axs[5, 1].xlim(left=1.0e8)
-    axs[5, 1].ylim(bottom=1.0e5)
+    axs[5, 1].set_xlim(left=1.0e8)
+    axs[5, 1].set_ylim(bottom=1.0e5)
     axs[5, 1].set_xscale("log")
     axs[5, 1].set_yscale("log")
     axs[5, 1].legend()
