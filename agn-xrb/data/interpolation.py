@@ -14,13 +14,13 @@ merged_df = pd.merge(df1, df2, left_on=0, right_on=0, how='outer', suffixes=('_d
 merged_df.sort_values(0, inplace=True)
 
 # Interpolate missing values in the second column of df2
-merged_df[1] = merged_df[1].interpolate()
+merged_df[1] = merged_df[1 + len(df1.columns)].interpolate()
 
 # Now you have a dataframe with interpolated values from df2 that match the first column of df1
 # The '1_df2' column contains the interpolated values
 
 # If needed, you can drop unnecessary columns
-final_df = merged_df[[0, '1_df1', '1_df2']]
+final_df = merged_df[[0, 1 + len(df1.columns), 1 + len(df1.columns) + 1]]
 
 # Print or save the final dataframe
 print(final_df)
