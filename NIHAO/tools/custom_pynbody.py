@@ -94,7 +94,10 @@ class analyzeNIHAO:
         for i in range(self.n_file):
             self.file = self.dir + self.m_sim + "." + "{:05d}".format((i + 1) * 16)
             # print("Reading "+self.file)
-            self.loadPynbody(self.file)
+            try:
+                self.loadPynbody(self.file)
+            except Exception:
+                print("No file found!")
 
             try:
                 pynbody.analysis.halo.center(self.h[1], mode="hyb")
