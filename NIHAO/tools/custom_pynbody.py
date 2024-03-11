@@ -92,17 +92,18 @@ class analyzeNIHAO:
         self.eps_r = 0.1  # accretion (radiative) efficiency
 
         for i in range(self.n_file):
-            self.file = self.dir + self.m_sim + "." + "{:05d}".format((i + 1) * 16)
+            self.file = os.path.join(self.dir, f"{self.m_sim}.{(i + 1) * 16:05d}")
             # print("Reading "+self.file)
             try:
                 self.loadPynbody(self.file)
-            except Exception:
-                print("No file found!")
+            except FileNotFoundError:
+                print(f"Error: File not found at {self.file}")
+                break
 
             try:
                 pynbody.analysis.halo.center(self.h[1], mode="hyb")
             except Exception:
-                print("Error at " + self.file + ": Could not center!")
+                print(f"Error at {self.file}: Could not center!")
 
             self.df["t"][i] = self.s.properties["time"].in_units("Gyr")
             self.df["z"][i] = self.s.properties["z"]
@@ -163,7 +164,7 @@ class analyzeNIHAO:
                 / (self.eps_r * self.tau_s)
             )
 
-        print("Analysis complete.")
+        print("Analysis completed.")
 
     def readData(self):
         outfile = self.dir + self.m_sim + ".csv"
