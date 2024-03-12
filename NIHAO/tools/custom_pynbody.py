@@ -98,7 +98,7 @@ class analyzeNIHAO:
                 self.loadPynbody(self.file)
             except FileNotFoundError:
                 print(f"Error: File not found at {self.file}")
-                break
+                continue
             except OSError as e:
                 print(f"OSError occurred: {e}. Skipping this file and continuing.")
                 continue
