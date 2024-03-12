@@ -99,6 +99,9 @@ class analyzeNIHAO:
             except FileNotFoundError:
                 print(f"Error: File not found at {self.file}")
                 break
+            except OSError as e:
+                print(f"OSError occurred: {e}. Skipping this file and continuing.")
+                continue
 
             try:
                 pynbody.analysis.halo.center(self.h[1], mode="hyb")
