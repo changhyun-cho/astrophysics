@@ -339,7 +339,7 @@ def visual_nihao(*args):
     axs[5, 1].set_ylim(bottom=1.0e5)
     axs[5, 1].set_xscale("log")
     axs[5, 1].set_yscale("log")
-    axs[5, 1].legend()
+    # axs[5, 1].legend()
     plt.show()
 
 
