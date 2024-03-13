@@ -212,7 +212,7 @@ def visual_nihao(*args):
         axs[4, 0].step(data[0]["t"], data[0]["sftlen"], color=colors[i], label=data[1])
         axs[4, 1].step(data[0]["t"], data[0]["n_g"], color=colors[i], label=data[1])
         axs[5, 0].step(data[0]["t"], data[0]["n_s"], color=colors[i], label=data[1])
-        axs[5, 1].step(data[0]["m_s"], data[0]["m_bh"], color=colors[i], label=data[1])
+        axs[5, 1].plot(data[0]["m_s"], data[0]["m_bh"], color=colors[i], label=data[1])
         i += 1
 
     axs[0, 0].set_xlabel(
