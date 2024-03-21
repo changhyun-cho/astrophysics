@@ -30,18 +30,36 @@ if __name__ == "__main__":
     last_file = str(sys.argv[1])
     run_AHF(last_file)
 
-#    files = ('/data/cc6881/gasfix_nihao1/g6.86e12/g6.86e12.01024',
-#             '/data/cc6881/movies/g7.08e11/g7.08e11.01024',
-#             '/data/cc6881/gasfix_nihao1/g8.94e12/g8.94e12.01024',
-#             '/data/cc6881/gasfix_nihao1/g2.02e13/g2.02e13.01024',
-#             '/data/cc6881/new_fb_test/torque_test/g2.71e12.01024',
-#             '/data/cc6881/movies/g1.12e12/g1.12e12.01024',
-#             '/data/cc6881/gasfix_nihao1/g2.11e13/g2.11e13.01024',
-#             '/data/cc6881/gasfix_nihao1/g2.20e13/g2.20e13.01024',
-#             '/data/cc6881/new_fb_test/alpha_test/g2.37e12.01024',
-#             '/data/cc6881/movies/g2.83e10/g2.83e10.01024')
+    files = (
+        "/data/cc6881/output_NIHAO/agn/g2.71e12.01024",
+        "/data/cc6881/new_fb_test/normal/g2.71e12/g2.71e12.01024",
+        "/data/cc6881/new_fb_test/alpha_2FB/g2.71e12/g2.71e12.01024",
+        "/data/cc6881/new_fb_test/kinetic_test/g2.71e12/g2.71e12.01024",
+        "/data/cc6881/new_fb_test/kinetic_test/g2.71e12_erf/g2.71e12.01024",
+        "/data/cc6881/new_fb_test/kinetic_test/g2.71e12_obs_0.3/g2.71e12.01024",
+        "/data/cc6881/new_fb_test/10_thermal/alpha/g2.71e12.01024",
+        "/data/cc6881/new_fb_test/10_thermal/bondi/g2.71e12.01024",
+        "/data/cc6881/new_fb_test/BHseed_test/g2.71e12_alpha_2fb/g2.71e12.01024",
+        "/data/cc6881/new_fb_test/BHseed_test/g2.71e12_bondi_2fb/g2.71e12.01024",
+        "/data/cc6881/new_fb_test/BHseed_test/g2.71e12_twoFB_normal/g2.71e12.01024",
+        "/data/cc6881/new_fb_test/BHseed_test/g2.71e12_twoFB_alpha/g2.71e12.01024",
+    )
 
-#    for file in files:
-#        run_AHF(file)
+    #        '/data/cc6881/gasfix_nihao1/g6.86e12/g6.86e12.01024',
+    #             '/data/cc6881/movies/g7.08e11/g7.08e11.01024',
+    #             '/data/cc6881/gasfix_nihao1/g8.94e12/g8.94e12.01024',
+    #             '/data/cc6881/gasfix_nihao1/g2.02e13/g2.02e13.01024',
+    #             '/data/cc6881/new_fb_test/torque_test/g2.71e12.01024',
+    #             '/data/cc6881/movies/g1.12e12/g1.12e12.01024',
+    #             '/data/cc6881/gasfix_nihao1/g2.11e13/g2.11e13.01024',
+    #             '/data/cc6881/gasfix_nihao1/g2.20e13/g2.20e13.01024',
+    #             '/data/cc6881/new_fb_test/alpha_test/g2.37e12.01024',
+    #             '/data/cc6881/movies/g2.83e10/g2.83e10.01024')
+
+    for file in files:
+        try:
+            run_AHF(file)
+        except Exception:
+            print("Next!")
 
 # python3 run_AHF.py <LAST CHECKPOINT>
