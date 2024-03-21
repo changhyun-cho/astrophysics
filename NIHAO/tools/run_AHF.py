@@ -1,6 +1,5 @@
 import pynbody
 import os
-import sys
 
 
 def get_info(f):
@@ -27,8 +26,8 @@ def run_AHF(file):
 
 if __name__ == "__main__":
 
-    last_file = str(sys.argv[1])
-    run_AHF(last_file)
+    # last_file = str(sys.argv[1])
+    # run_AHF(last_file)
 
     files = (
         "/data/cc6881/output_NIHAO/agn/g2.71e12.01024",
@@ -61,5 +60,6 @@ if __name__ == "__main__":
             run_AHF(file)
         except Exception:
             print("Next!")
+    # run_AHF(file)
 
 # python3 run_AHF.py <LAST CHECKPOINT>
