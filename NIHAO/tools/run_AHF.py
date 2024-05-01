@@ -33,7 +33,7 @@ if __name__ == "__main__":
         "/data/cc6881/output_NIHAO/agn/g2.71e12.01024",
         "/data/cc6881/new_fb_test/bondi/g2.71e12/g2.71e12.01024",
         "/data/cc6881/new_fb_test/alpha/g2.71e12/g2.71e12.01024",
-        "/scratch/cc6881/new_fb_test/alpha/g2.71e12_scaled_alpha/g2.71e12.01024",
+        "/data/cc6881/new_fb_test/alpha/g2.71e12_scaled_alpha/g2.71e12.01024",
         "/data/cc6881/output_NIHAO/agn/g8.26e11.01024",
         "/data/cc6881/new_fb_test/bondi/g8.26e11/g8.26e11.01024",
         "/data/cc6881/new_fb_test/alpha/g8.26e11/g8.26e11.01024",
