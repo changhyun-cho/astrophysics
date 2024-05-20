@@ -277,7 +277,7 @@ def visual_hello(*args):
     axs[0, 1].set_ylabel(
         r"$M_{*}$ [$M_{\odot}$]",
     )
-    axs[0, 1].ylim(1.0e7)
+    axs[0, 1].set_ylim(1.0e7)
     axs[0, 1].set_yscale("log")
     axs[0, 1].legend()
 
