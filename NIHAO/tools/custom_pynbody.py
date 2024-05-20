@@ -32,37 +32,38 @@ dpi = 500
 class analyzeHELLO:
     # obtain and save some physical parameters from the hello snapshots
 
-    def __init__(self, f):  # , outdir import pandas as pd
+    def __init__(self, f):
         self.f = f
         # self.outdir = outdir
         self.dir = str(self.f[:-14])
         self.m_sim = str(self.f[-14:-6])
         self.n_file = int(int(self.f[-5:]) / 16)
         self.dt = [
-            ("t", float),
-            ("z", float),
-            ("sfh", float),
-            ("sfhtime", float),
-            ("sftlen", float),
-            ("n_gas_bh", float),
-            ("rho_gas", float),
-            ("mvir", float),
-            ("rvir", float),
-            ("m_bh", float),
-            ("m_bhc", float),
-            ("m_dm", float),
-            ("m_s", float),
-            ("m_g", float),
-            ("m_g_hot", float),
-            ("m_g_cold", float),
-            ("mdot", float),
-            ("mdotedd", float),
-            ("n_s", float),
-            ("n_g", float),
-            ("n_bh", float),
-            ("n_dm", float),
+            "t",
+            "z",
+            "sfh",
+            "sfhtime",
+            "sftlen",
+            "n_gas_bh",
+            "rho_gas",
+            "mvir",
+            "rvir",
+            "m_bh",
+            "m_bhc",
+            "m_dm",
+            "m_s",
+            "m_g",
+            "m_g_hot",
+            "m_g_cold",
+            "mdot",
+            "mdotedd",
+            "n_s",
+            "n_g",
+            "n_bh",
+            "n_dm",
         ]
-        self.df = pd.DataFrame(np.zeros(self.n_file, dtype=self.dt))
+        # Initialize DataFrame with zeros for each column
+        self.df = pd.DataFrame({column: np.zeros(self.n_file) for column in self.dt})
         # can be used for many halos in the future!
 
     def loadPynbody(self, file):
@@ -135,14 +136,13 @@ class analyzeHELLO:
                     / ((4.0 / 3.0) * np.pi)
                 )
 
-                self.t_beg = self.df["t"][0]
-                self.t_end = self.df["t"][i]
-                self.bins = i + 1
-                self.df["sfh"], self.df["sfhtime"] = self.find_sfh(
-                    self.h, self.t_beg, self.t_end, self.bins
-                )
-
                 try:
+                    self.t_beg = self.df["t"][0]
+                    self.t_end = self.df["t"][i]
+                    self.bins = i + 1
+                    self.df["sfh"], self.df["sfhtime"] = self.find_sfh(
+                        self.h, self.t_beg, self.t_end, self.bins
+                    )
                     self.bhs = self.h[1].star[self.bhf]
                     self.i_bh = self.bhs["mass"].argmax()
                     self.df["m_bhc"][i] = self.bhs[self.i_bh]["mass"].in_units("Msol")
@@ -256,7 +256,12 @@ def visual_hello(*args):
             label=data[1],
         )
         axs[4, 0].scatter(
-            data[0]["mvir"], data[0]["m_s"], color=colors[i], label=data[1], s=15
+            data[0]["mvir"],
+            data[0]["m_s"],
+            color=colors[i],
+            label=data[1],
+            s=15,
+            alpha=0.6,
         )
         axs[4, 1].step(data[0]["t"], data[0]["rho_gas"], color=colors[i], label=data[1])
         axs[5, 0].plot(data[0]["m_s"], data[0]["sfh"], color=colors[i], label=data[1])
