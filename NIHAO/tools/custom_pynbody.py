@@ -135,6 +135,13 @@ class analyzeHELLO:
                     / ((4.0 / 3.0) * np.pi)
                 )
 
+                self.t_beg = self.df["t"][0]
+                self.t_end = self.df["t"][i]
+                self.bins = i + 1
+                self.df["sfh"], self.df["sfhtime"] = self.find_sfh(
+                    self.h, self.t_beg, self.t_end, self.bins
+                )
+
                 try:
                     self.bhs = self.h[1].star[self.bhf]
                     self.i_bh = self.bhs["mass"].argmax()
@@ -148,13 +155,6 @@ class analyzeHELLO:
 
             except Exception:
                 print(f"Error at {self.file}: Could not find the central halo!")
-
-        self.t_beg = self.df["t"][0]
-        self.t_end = self.df["t"][self.n_file - 1]
-        self.bins = self.n_file
-        self.df["sfh"], self.df["sfhtime"] = self.find_sfh(
-            self.h, self.t_beg, self.t_end, self.bins
-        )
 
         for i in range(0, self.n_file - 1):
             self.df["mdot"][i] = (
@@ -255,9 +255,11 @@ def visual_hello(*args):
             color=colors[i],
             label=data[1],
         )
-        axs[4, 0].step(data[0]["mvir"], data[0]["m_s"], color=colors[i], label=data[1])
+        axs[4, 0].scatter(
+            data[0]["mvir"], data[0]["m_s"], color=colors[i], label=data[1], s=15
+        )
         axs[4, 1].step(data[0]["t"], data[0]["rho_gas"], color=colors[i], label=data[1])
-        axs[5, 0].step(data[0]["m_s"], data[0]["sfh"], color=colors[i], label=data[1])
+        axs[5, 0].plot(data[0]["m_s"], data[0]["sfh"], color=colors[i], label=data[1])
         axs[5, 1].plot(data[0]["m_s"], data[0]["m_bh"], color=colors[i], label=data[1])
         i += 1
 
@@ -277,7 +279,7 @@ def visual_hello(*args):
     axs[0, 1].set_ylabel(
         r"$M_{*}$ [$M_{\odot}$]",
     )
-    axs[0, 1].set_ylim(1.0e7)
+    axs[0, 1].set_ylim(bottom=1.0e7)
     axs[0, 1].set_yscale("log")
     axs[0, 1].legend()
 
