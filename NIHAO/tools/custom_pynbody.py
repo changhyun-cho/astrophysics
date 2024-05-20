@@ -70,7 +70,7 @@ class analyzeHELLO:
         self.s.physical_units()
         self.h = self.s.halos()
 
-    def find_sfh(self, h, t_beg, t_end, bins=64):
+    def find_sfh(self, h, t_beg, t_end, bins):
         starf = pynbody.filt.HighPass("tform", "0 Gyr")
         stars = h[1].star[starf]
         binnorm = 1e-9 * bins / (t_end - t_beg)
@@ -128,14 +128,13 @@ class analyzeHELLO:
                 self.df["n_g"][i] = len(self.h[1].gas)
                 self.df["n_s"][i] = len(self.h[1].star)
                 self.df["n_dm"][i] = len(self.h[1].d)
-                self.df["n_gas_bh"][i] = len(
-                    self.h[1].g[self.onekpc]
-                )  # 5 * self.df["sftlen"][i]]
+                self.df["n_gas_bh"][i] = len(self.h[1].g[self.onekpc])
                 self.df["rho_gas"][i] = (
                     1.0e-9
                     * np.sum(self.h[1].g[self.onekpc]["mass"].in_units("Msol"))
                     / ((4.0 / 3.0) * np.pi)
                 )
+                self.t_end = self.df["t"][self.n_file - 1]
 
                 try:
                     self.bhs = self.h[1].star[self.bhf]
@@ -152,10 +151,10 @@ class analyzeHELLO:
                 print(f"Error at {self.file}: Could not find the central halo!")
 
         self.t_beg = self.df["t"][0]
-        self.t_end = self.df["t"][self.n_file - 1]
+        # self.t_end = self.df["t"][self.n_file - 1]
         self.bins = self.n_file
         self.df["sfh"], self.df["sfhtime"] = self.find_sfh(
-            self.h, self.t_beg, self.t_end, self.bins
+            self.h, self.t_beg, self.t_end, i + 1
         )
 
         for i in range(0, self.n_file - 1):
