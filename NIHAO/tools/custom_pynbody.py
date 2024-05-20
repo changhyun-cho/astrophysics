@@ -38,7 +38,7 @@ class analyzeHELLO:
         self.dir = str(self.f[:-14])
         self.m_sim = str(self.f[-14:-6])
         self.n_file = int(int(self.f[-5:]) / 16)
-        self.dt = [
+        self.dt = (
             ["t", float],
             ["z", float],
             ["sfh", float],
@@ -61,7 +61,7 @@ class analyzeHELLO:
             ["n_g", float],
             ["n_bh", float],
             ["n_dm", float],
-        ]
+        )
         self.df = pd.DataFrame(np.zeros(self.n_file, dtype=self.dt))
         # can be used for many halos in the future!
 
