@@ -132,7 +132,9 @@ class analyzeHELLO:
                     self.h[1].g[self.onekpc]
                 )  # 5 * self.df["sftlen"][i]]
                 self.df["rho_gas"][i] = (
-                    1.0e-9 * np.sum(self.h[1].g[self.onekpc]) / ((4.0 / 3.0) * np.pi)
+                    1.0e-9
+                    * np.sum(self.h[1].g[self.onekpc]["mass"].in_units("Msol"))
+                    / ((4.0 / 3.0) * np.pi)
                 )
 
                 try:
