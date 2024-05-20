@@ -38,30 +38,30 @@ class analyzeHELLO:
         self.dir = str(self.f[:-14])
         self.m_sim = str(self.f[-14:-6])
         self.n_file = int(int(self.f[-5:]) / 16)
-        self.dt = (
-            ["t", float],
-            ["z", float],
-            ["sfh", float],
-            ["sfhtime", float],
-            ["sftlen", float],
-            ["n_gas_bh", float],
-            ["rho_gas", float],
-            ["mvir", float],
-            ["rvir", float],
-            ["m_bh", float],
-            ["m_bhc", float],
-            ["m_dm", float],
-            ["m_s", float],
-            ["m_g", float],
-            ["m_g_hot", float],
-            ["m_g_cold", float],
-            ["mdot", float],
-            ["mdotedd", float],
-            ["n_s", float],
-            ["n_g", float],
-            ["n_bh", float],
-            ["n_dm", float],
-        )
+        self.dt = [
+            ("t", float),
+            ("z", float),
+            ("sfh", float),
+            ("sfhtime", float),
+            ("sftlen", float),
+            ("n_gas_bh", float),
+            ("rho_gas", float),
+            ("mvir", float),
+            ("rvir", float),
+            ("m_bh", float),
+            ("m_bhc", float),
+            ("m_dm", float),
+            ("m_s", float),
+            ("m_g", float),
+            ("m_g_hot", float),
+            ("m_g_cold", float),
+            ("mdot", float),
+            ("mdotedd", float),
+            ("n_s", float),
+            ("n_g", float),
+            ("n_bh", float),
+            ("n_dm", float),
+        ]
         self.df = pd.DataFrame(np.zeros(self.n_file, dtype=self.dt))
         # can be used for many halos in the future!
 
