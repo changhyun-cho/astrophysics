@@ -89,6 +89,7 @@ class analyzeHELLO:
         self.fifmyrf = pynbody.filt.LowPass("age", "15 Myr")
         self.hot = pynbody.filt.HighPass("temp", 2e4)
         self.cold = pynbody.filt.LowPass("temp", 2e4)
+        self.onekpc = pynbody.filt.Sphere("1 kpc")
 
         self.tau_s = 4.5e8  # Salpeter timescale (year)
         self.eps_r = 0.1  # accretion (radiative) efficiency
@@ -127,6 +128,12 @@ class analyzeHELLO:
                 self.df["n_g"][i] = len(self.h[1].gas)
                 self.df["n_s"][i] = len(self.h[1].star)
                 self.df["n_dm"][i] = len(self.h[1].d)
+                self.df["n_gas_bh"][i] = len(
+                    self.h[1].g[self.onekpc]
+                )  # 5 * self.df["sftlen"][i]]
+                self.df["rho_gas"][i] = (
+                    1.0e-9 * np.sum(self.h[1].g[self.onekpc]) / ((4.0 / 3.0) * np.pi)
+                )
 
                 try:
                     self.bhs = self.h[1].star[self.bhf]
@@ -135,16 +142,7 @@ class analyzeHELLO:
                     self.df["n_bh"][i] = len(self.bhs)
                     self.df["m_bh"][i] = np.sum(self.bhs["mass"].in_units("Msol"))
                     self.df["sftlen"][i] = self.bhs[self.i_bh]["eps"]  # kpcbhs[i_bh]
-                    self.df["n_gas_bh"][i] = len(
-                        self.h[1].g[
-                            pynbody.filt.Sphere("1 kpc")  # 5 * self.df["sftlen"][i]
-                        ]
-                    )
-                    self.df["rho_gas"][i] = (
-                        np.sum(self.h[1].g[pynbody.filt.Sphere("1 kpc")])
-                        / ((4.0 / 3.0) * np.pi)
-                        * 1e-9
-                    )
+
                 except Exception:
                     print(f"Warning from {self.file}: No black holes generated yet!")
 
