@@ -11,6 +11,7 @@ import distinctipy
 import pynbody
 import pynbody.filt as f
 import pynbody.plot.sph as sph
+from pynbody.plot.stars import moster, behroozi
 
 N = 128
 pynbody.config["centering-scheme"] = "ssc"
@@ -28,8 +29,8 @@ matplotlib.rcParams["text.usetex"] = True
 dpi = 500
 
 
-class analyzeNIHAO:
-    # obtain and save some physical parameters from the NIHAO snapshots
+class analyzeHELLO:
+    # obtain and save some physical parameters from the hello snapshots
 
     def __init__(self, f):  # , outdir import pandas as pd
         self.f = f
@@ -38,27 +39,28 @@ class analyzeNIHAO:
         self.m_sim = str(self.f[-14:-6])
         self.n_file = int(int(self.f[-5:]) / 16)
         self.dt = [
-            ("t", float),
-            ("z", float),
-            ("sfh", float),
-            ("sfhtime", float),
-            ("sftlen", float),
-            ("n_gas_bh", float),
-            ("mvir", float),
-            ("rvir", float),
-            ("m_bh", float),
-            ("m_bhc", float),
-            ("m_dm", float),
-            ("m_s", float),
-            ("m_g", float),
-            ("m_g_hot", float),
-            ("m_g_cold", float),
-            ("mdot", float),
-            ("mdotedd", float),
-            ("n_s", float),
-            ("n_g", float),
-            ("n_bh", float),
-            ("n_dm", float),
+            ["t", float],
+            ["z", float],
+            ["sfh", float],
+            ["sfhtime", float],
+            ["sftlen", float],
+            ["n_gas_bh", float],
+            ["rho_gas", float],
+            ["mvir", float],
+            ["rvir", float],
+            ["m_bh", float],
+            ["m_bhc", float],
+            ["m_dm", float],
+            ["m_s", float],
+            ["m_g", float],
+            ["m_g_hot", float],
+            ["m_g_cold", float],
+            ["mdot", float],
+            ["mdotedd", float],
+            ["n_s", float],
+            ["n_g", float],
+            ["n_bh", float],
+            ["n_dm", float],
         ]
         self.df = pd.DataFrame(np.zeros(self.n_file, dtype=self.dt))
         # can be used for many halos in the future!
@@ -134,9 +136,14 @@ class analyzeNIHAO:
                     self.df["m_bh"][i] = np.sum(self.bhs["mass"].in_units("Msol"))
                     self.df["sftlen"][i] = self.bhs[self.i_bh]["eps"]  # kpcbhs[i_bh]
                     self.df["n_gas_bh"][i] = len(
-                        self.h[1].g[self.cold][
-                            pynbody.filt.Sphere(5 * self.df["sftlen"][i])
+                        self.h[1].g[
+                            pynbody.filt.Sphere("1 kpc")  # 5 * self.df["sftlen"][i]
                         ]
+                    )
+                    self.df["rho_gas"][i] = (
+                        np.sum(self.h[1].g[pynbody.filt.Sphere("1 kpc")])
+                        / ((4.0 / 3.0) * np.pi)
+                        * 1e-9
                     )
                 except Exception:
                     print(f"Warning from {self.file}: No black holes generated yet!")
@@ -189,8 +196,49 @@ class analyzeNIHAO:
         )  # self.dir+self.m_sim+'.csv' #self.outdir+self.m_sim+'.csv'
 
 
-def visual_nihao(*args):
+def visual_hello(*args):
+
     fig, axs = plt.subplots(6, 2, figsize=(10, 20), dpi=dpi)
+
+    # Moster realtion
+    # Generate log-spaced mass array
+    halomasses = np.logspace(9, 13.5, 40)
+
+    # Calculate stellar masses and errors using Moster and Behroozi relations
+    y_stellar_moster, errors_moster = moster(halomasses, 0)
+    y_stellar_behroozi, errors_behroozi = behroozi(
+        halomasses, 0, alpha=-1.412, Kravtsov=False
+    )
+
+    # Plotting shaded areas for errors
+    axs[4, 0].fill_between(
+        halomasses,
+        y_stellar_moster / errors_moster,
+        y2=y_stellar_moster * errors_moster,
+        color="skyblue",
+        alpha=0.6,
+        label="Moster+ (2013)",
+    )
+    axs[4, 0].fill_between(
+        halomasses,
+        y_stellar_behroozi / errors_behroozi,
+        y2=y_stellar_behroozi * errors_behroozi,
+        color="coral",
+        alpha=0.6,
+        label="Behroozi+ (2013)",
+    )
+
+    # BH mass-stellar mass relation
+    m_s_rel = np.logspace(7.5, 11.5, 100)
+    m_bh_rel = 0.49e9 * (m_s_rel / 1.0e11) ** 1.17
+    dex = 0.28
+
+    axs[5, 1].plot(
+        m_s_rel, m_bh_rel, label="Kormendy \& Ho (2013)", color="gray", linewidth=1
+    )
+    axs[5, 1].fill_between(
+        m_s_rel, m_bh_rel * (1.0 - dex), m_bh_rel * (1.0 + dex), color="gray", alpha=0.3
+    )
 
     i = 0
     for data in args:
@@ -209,9 +257,9 @@ def visual_nihao(*args):
             color=colors[i],
             label=data[1],
         )
-        axs[4, 0].step(data[0]["t"], data[0]["sftlen"], color=colors[i], label=data[1])
-        axs[4, 1].step(data[0]["t"], data[0]["n_g"], color=colors[i], label=data[1])
-        axs[5, 0].step(data[0]["t"], data[0]["n_s"], color=colors[i], label=data[1])
+        axs[4, 0].step(data[0]["mvir"], data[0]["m_s"], color=colors[i], label=data[1])
+        axs[4, 1].step(data[0]["t"], data[0]["rho_gas"], color=colors[i], label=data[1])
+        axs[5, 0].step(data[0]["m_s"], data[0]["sfh"], color=colors[i], label=data[1])
         axs[5, 1].plot(data[0]["m_s"], data[0]["m_bh"], color=colors[i], label=data[1])
         i += 1
 
@@ -231,7 +279,7 @@ def visual_nihao(*args):
     axs[0, 1].set_ylabel(
         r"$M_{*}$ [$M_{\odot}$]",
     )
-    # axs[0, 1].xlim(4,14)
+    axs[0, 1].ylim(1.0e7)
     axs[0, 1].set_yscale("log")
     axs[0, 1].legend()
 
@@ -287,48 +335,40 @@ def visual_nihao(*args):
         "time [Gyr]",
     )  #'Redshift (z)'
     axs[3, 1].set_ylabel(
-        r"$\dot{m}$ [$M_{\odot}/yr$]",
+        r"$\dot{m}$",
     )
     axs[3, 1].set_yscale("log")
     axs[3, 1].legend()
     axs[3, 1].axhline(y=0.05, color="purple", linestyle="-")
 
     axs[4, 0].set_xlabel(
-        "time [Gyr]",
-    )  #'Redshift (z)'
-    axs[4, 0].set_ylabel(
-        r"$h_{sft}$ [$kpc$]",
+        r"$M_{Vir}$ [$M_{\odot}$]",
     )
+    axs[4, 0].set_ylabel(r"$M_{*}$ [$M_{\odot}$]")
+    axs[4, 0].set_xscale("log")
     axs[4, 0].set_yscale("log")
+    axs[4, 0].set_xlim(1.0e9, 1.0e13)
     axs[4, 0].legend()
 
     axs[4, 1].set_xlabel(
         "time [Gyr]",
-    )  #'Redshift (z)'
+    )
     axs[4, 1].set_ylabel(
-        r"$n_{gas}$",
+        r"$\rho_{gas}$ [$M_{\odot}$ pc$^{-3}$]",
     )
     axs[4, 1].set_yscale("log")
     axs[4, 1].legend()
 
     axs[5, 0].set_xlabel(
-        "time [Gyr]",
-    )  #'Redshift (z)'
-    axs[5, 0].set_ylabel(
-        r"$n_{*}$",
+        r"$M_{*}$ [$M_{\odot}$]",
     )
+    axs[5, 0].set_ylabel(
+        r"SFR [$M_{\odot}/yr$]",
+    )
+    axs[5, 0].set_xscale("log")
     axs[5, 0].set_yscale("log")
     axs[5, 0].legend()
 
-    m_s_rel = np.logspace(7.5, 11.5, 100)
-    m_bh_rel = 0.49e9 * (m_s_rel / 1.0e11) ** 1.17
-    dex = 0.28
-    axs[5, 1].plot(
-        m_s_rel, m_bh_rel, label="Kormendy \& Ho (2013)", color="gray", linewidth=1
-    )
-    axs[5, 1].fill_between(
-        m_s_rel, m_bh_rel * (1.0 - dex), m_bh_rel * (1.0 + dex), color="gray", alpha=0.3
-    )
     axs[5, 1].set_xlabel(
         r"$M_{*}$ [$M_{\odot}$]",
     )  #'Redshift (z)'
@@ -339,11 +379,11 @@ def visual_nihao(*args):
     axs[5, 1].set_ylim(bottom=1.0e5)
     axs[5, 1].set_xscale("log")
     axs[5, 1].set_yscale("log")
-    # axs[5, 1].legend()
+    axs[5, 1].legend()
     plt.show()
 
 
-def dist_nihao(*args):
+def dist_hello(*args):
     def getPARTICLES(halo):
         s = pynbody.load(halo)
         s.physical_units()  # convert all units to something reasonable (kpc, Msol, etc)
@@ -530,7 +570,7 @@ def dist_nihao(*args):
     plt.show()
 
 
-def map_nihao(*args):
+def map_hello(*args):
     # See these links
     # https://pynbody.github.io/pynbody/tutorials/pictures.html
     # https://pynbody.github.io/pynbody/tutorials/halos.html
