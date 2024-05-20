@@ -134,7 +134,6 @@ class analyzeHELLO:
                     * np.sum(self.h[1].g[self.onekpc]["mass"].in_units("Msol"))
                     / ((4.0 / 3.0) * np.pi)
                 )
-                self.t_end = self.df["t"][self.n_file - 1]
 
                 try:
                     self.bhs = self.h[1].star[self.bhf]
@@ -151,10 +150,10 @@ class analyzeHELLO:
                 print(f"Error at {self.file}: Could not find the central halo!")
 
         self.t_beg = self.df["t"][0]
-        # self.t_end = self.df["t"][self.n_file - 1]
+        self.t_end = self.df["t"][self.n_file - 1]
         self.bins = self.n_file
         self.df["sfh"], self.df["sfhtime"] = self.find_sfh(
-            self.h, self.t_beg, self.t_end, i + 1
+            self.h, self.t_beg, self.t_end, self.bins
         )
 
         for i in range(0, self.n_file - 1):
