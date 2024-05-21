@@ -137,12 +137,6 @@ class analyzeHELLO:
                 )
 
                 try:
-                    self.t_beg = self.df["t"][0]
-                    self.t_end = self.df["t"][i]
-                    self.bins = i + 1
-                    self.df["sfh"], self.df["sfhtime"] = self.find_sfh(
-                        self.h, self.t_beg, self.t_end, self.bins
-                    )
                     self.bhs = self.h[1].star[self.bhf]
                     self.i_bh = self.bhs["mass"].argmax()
                     self.df["m_bhc"][i] = self.bhs[self.i_bh]["mass"].in_units("Msol")
@@ -155,6 +149,13 @@ class analyzeHELLO:
 
             except Exception:
                 print(f"Error at {self.file}: Could not find the central halo!")
+
+        self.t_beg = self.df["t"][0]
+        self.t_end = self.df["t"][i]
+        self.bins = i + 1
+        self.df["sfh"], self.df["sfhtime"] = self.find_sfh(
+            self.h, self.t_beg, self.t_end, self.bins
+        )
 
         for i in range(0, self.n_file - 1):
             self.df["mdot"][i] = (
