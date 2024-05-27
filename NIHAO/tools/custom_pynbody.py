@@ -3,10 +3,13 @@ import os.path
 
 import numpy as np
 import pandas as pd
+from scipy import interpolate
+from scipy.interpolate import InterpolatedUnivariateSpline
 
 import matplotlib
 import matplotlib.pyplot as plt
 import distinctipy
+
 
 import pynbody
 import pynbody.filt as f
@@ -14,7 +17,7 @@ import pynbody.plot.sph as sph
 from pynbody.plot.stars import moster, behroozi
 
 N = 128
-pynbody.config["centering-scheme"] = "ssc"
+# pynbody.config["centering-scheme"] = "ssc"
 pynbody.config["number_of_threads"] = N
 os.environ["OMP_NUM_THREADS"] = str(N)
 
@@ -44,10 +47,13 @@ class analyzeHELLO:
             "sfh",
             "sfhtime",
             "sftlen",
-            "n_gas_bh",
+            "n_g_1",
+            "n_g_2",
+            "n_g_3",
             "rho_gas",
             "mvir",
             "rvir",
+            "r_half_m",
             "m_bh",
             "m_bhc",
             "m_dm",
@@ -59,6 +65,8 @@ class analyzeHELLO:
             "mdotedd",
             "n_s",
             "n_g",
+            # "v_disp_hm",
+            # "v_disp_595",
             "n_bh",
             "n_dm",
         ]
@@ -83,6 +91,66 @@ class analyzeHELLO:
         sfhtimes = 0.5 * (sfhbines[1:] + sfhbines[:-1])
         return sfh, sfhtimes
 
+    def get_r_half(self, halo):
+
+        # Calculate total stellar mass and find the maximum radius
+        m_tot = np.sum(halo.s["mass"].in_units("Msol"))
+        r_max = halo.s["r"].in_units("kpc").max()
+
+        N = 200
+        r_list = np.logspace(np.log10(0.5), np.log10(r_max), N)
+        m_list = np.zeros(N)
+
+        # Calculate the cumulative mass fraction within each radius
+        for i, r in enumerate(r_list):
+            sphere = pynbody.filt.Sphere(f"{r} kpc")
+            m_list[i] = np.sum(halo.s[sphere]["mass"].in_units("Msol"))
+
+        # Normalize the mass list to get the fraction of total mass
+        m_list /= m_tot
+
+        # Interpolation to find the half-mass radius
+        interp_func = interpolate.interp1d(
+            m_list, r_list, kind="linear", bounds_error=False, fill_value="extrapolate"
+        )
+        r_half_mass = interp_func(0.5)
+
+        return r_half_mass
+
+    def get_sigma(self, rbins, v_disp, r, k=1):
+
+        rbins = np.asarray(rbins)
+        v_disp = np.asarray(v_disp)
+
+        # Create an interpolation function
+        interp_func = InterpolatedUnivariateSpline(rbins, v_disp, k=k)
+
+        # Perform interpolation
+        sigma = interp_func(r)
+
+        return sigma
+
+    def get_norm_sig(self, rbins, v_disp, r_norm, r_ap):
+
+        # Convert input arrays to float for consistency
+        rbins = np.asarray(rbins, dtype=float)
+        v_disp = np.asarray(v_disp, dtype=float)
+        r_ap = float(r_ap)
+
+        # Calculate the normalization velocity dispersion at r_norm
+        sigma_norm = self.get_sigma(rbins, v_disp, r_norm)
+
+        # Constants for the scaling law
+        alpha = -0.065
+        beta = -0.013
+
+        # Calculate the log ratio of the aperture to the normalization radius
+        log_ratio = np.log10(r_ap / r_norm)
+
+        sigma_ap = sigma_norm * 10 ** (alpha * log_ratio + beta * log_ratio**2)
+
+        return sigma_ap
+
     def generateData(self):
 
         self.bhf = pynbody.filt.LowPass("tform", "0 Gyr")
@@ -90,7 +158,9 @@ class analyzeHELLO:
         self.fifmyrf = pynbody.filt.LowPass("age", "15 Myr")
         self.hot = pynbody.filt.HighPass("temp", 2e4)
         self.cold = pynbody.filt.LowPass("temp", 2e4)
-        self.onekpc = pynbody.filt.Sphere("1 kpc")
+        self.one = pynbody.filt.Sphere("1 kpc")
+        self.two = pynbody.filt.Sphere("2 kpc")
+        self.three = pynbody.filt.Sphere("3 kpc")
 
         self.tau_s = 4.5e8  # Salpeter timescale (year)
         self.eps_r = 0.1  # accretion (radiative) efficiency
@@ -104,7 +174,7 @@ class analyzeHELLO:
                 print("No file found! Skipping...")
 
             try:
-                pynbody.analysis.halo.center(self.h[1], mode="hyb")
+                pynbody.analysis.halo.center(self.h[1])
             except Exception:
                 print(f"Error at {self.file}: Could not center!")
 
@@ -125,14 +195,15 @@ class analyzeHELLO:
                 )
                 self.df["m_s"][i] = np.sum(self.h[1].star["mass"].in_units("Msol"))
                 self.df["m_dm"][i] = np.sum(self.h[1].d["mass"].in_units("Msol"))
-
                 self.df["n_g"][i] = len(self.h[1].gas)
                 self.df["n_s"][i] = len(self.h[1].star)
                 self.df["n_dm"][i] = len(self.h[1].d)
-                self.df["n_gas_bh"][i] = len(self.h[1].g[self.onekpc])
+                self.df["n_g_1"][i] = len(self.h[1].g[self.one])
+                self.df["n_g_2"][i] = len(self.h[1].g[self.two])
+                self.df["n_g_3"][i] = len(self.h[1].g[self.three])
                 self.df["rho_gas"][i] = (
                     1.0e-9
-                    * np.sum(self.h[1].g[self.onekpc]["mass"].in_units("Msol"))
+                    * np.sum(self.h[1].g[self.one]["mass"].in_units("Msol"))
                     / ((4.0 / 3.0) * np.pi)
                 )
 
@@ -241,20 +312,41 @@ def visual_hello(*args):
 
     i = 0
     for data in args:
-        axs[0, 0].step(data[0]["t"], data[0]["m_bh"], color=colors[i], label=data[1])
-        axs[0, 1].step(data[0]["t"], data[0]["m_s"], color=colors[i], label=data[1])
-        axs[1, 0].step(data[0]["t"], data[0]["m_g"], color=colors[i], label=data[1])
-        axs[1, 1].step(
-            data[0]["t"], data[0]["m_g_cold"], color=colors[i], label=data[1]
+        axs[0, 0].step(
+            data[0]["t"], data[0]["m_bh"], color=colors[i], alpha=0.6, label=data[1]
         )
-        axs[2, 0].step(data[0]["t"], data[0]["m_g_hot"], color=colors[i], label=data[1])
-        axs[2, 1].step(data[0]["t"], data[0]["sfh"], color=colors[i], label=data[1])
-        axs[3, 0].plot(data[0]["t"], data[0]["mdot"], color=colors[i], label=data[1])
-        axs[3, 1].plot(
+        axs[0, 1].step(
+            data[0]["t"], data[0]["m_s"], color=colors[i], alpha=0.6, label=data[1]
+        )
+        axs[1, 0].step(
+            data[0]["t"], data[0]["m_g"], color=colors[i], alpha=0.6, label=data[1]
+        )
+        axs[1, 1].step(
+            data[0]["t"], data[0]["m_g_cold"], color=colors[i], alpha=0.6, label=data[1]
+        )
+        axs[2, 0].step(
+            data[0]["t"], data[0]["m_g_hot"], color=colors[i], alpha=0.6, label=data[1]
+        )
+        axs[2, 1].step(
+            data[0]["t"], data[0]["sfh"], color=colors[i], alpha=0.6, label=data[1]
+        )
+        axs[3, 0].plot(
+            data[0]["t"], data[0]["mdot"], color=colors[i], alpha=0.6, label=data[1]
+        )
+        axs[3, 1].step(
             data[0]["t"],
-            data[0]["mdot"] / data[0]["mdotedd"],
+            data[0]["n_g_1"],
             color=colors[i],
-            label=data[1],
+            alpha=0.6,
+            label=f"{data[1]}, 1 kpc",
+        )
+        axs[3, 1].step(
+            data[0]["t"],
+            data[0]["n_g_2"],
+            linestyle="--",
+            color=colors[i],
+            alpha=0.6,
+            label=f"{data[1]}, 2 kpc",
         )
         axs[4, 0].scatter(
             data[0]["mvir"],
@@ -264,9 +356,15 @@ def visual_hello(*args):
             s=15,
             alpha=0.6,
         )
-        axs[4, 1].step(data[0]["t"], data[0]["rho_gas"], color=colors[i], label=data[1])
-        axs[5, 0].plot(data[0]["m_s"], data[0]["sfh"], color=colors[i], label=data[1])
-        axs[5, 1].plot(data[0]["m_s"], data[0]["m_bh"], color=colors[i], label=data[1])
+        axs[4, 1].step(
+            data[0]["t"], data[0]["rho_gas"], color=colors[i], alpha=0.6, label=data[1]
+        )
+        axs[5, 0].plot(
+            data[0]["m_s"], data[0]["sfh"], color=colors[i], alpha=0.6, label=data[1]
+        )
+        axs[5, 1].plot(
+            data[0]["m_s"], data[0]["m_bh"], color=colors[i], alpha=0.6, label=data[1]
+        )
         i += 1
 
     axs[0, 0].set_xlabel(
@@ -323,7 +421,7 @@ def visual_hello(*args):
         "time [Gyr]",
     )  #'Redshift (z)'
     axs[2, 1].set_ylabel(
-        r"SFR [$M_{\odot}/yr$]",
+        r"SFR [$M_{\odot}$ yr$^{-1}$]",
     )
     axs[2, 1].set_yscale("log")
     axs[2, 1].legend()
@@ -332,7 +430,7 @@ def visual_hello(*args):
         "time [Gyr]",
     )  #'Redshift (z)'
     axs[3, 0].set_ylabel(
-        r"$\dot{M}$ [$M_{\odot}/yr$]",
+        r"$\dot{M}$ [$M_{\odot}$ yr$^{-1}$]",
     )
     axs[3, 0].set_yscale("log")
     axs[3, 0].legend()
@@ -341,11 +439,10 @@ def visual_hello(*args):
         "time [Gyr]",
     )  #'Redshift (z)'
     axs[3, 1].set_ylabel(
-        r"$\dot{m}$",
+        r"$n_{gas}<r$ kpc",
     )
     axs[3, 1].set_yscale("log")
     axs[3, 1].legend()
-    axs[3, 1].axhline(y=0.05, color="purple", linestyle="-")
 
     axs[4, 0].set_xlabel(
         r"$M_{Vir}$ [$M_{\odot}$]",
@@ -369,7 +466,7 @@ def visual_hello(*args):
         r"$M_{*}$ [$M_{\odot}$]",
     )
     axs[5, 0].set_ylabel(
-        r"SFR [$M_{\odot}/yr$]",
+        r"SFR [$M_{\odot}$ yr$^{-1}$]",
     )
     axs[5, 0].set_xscale("log")
     axs[5, 0].set_yscale("log")
