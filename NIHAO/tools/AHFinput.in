@@ -1,0 +1,20 @@
+[AHF]
+ic_filename = SNAPSHOT
+ic_filetype = 90
+outfile_prefix = SNAPSHOT
+LgridDomain = 256
+LgridMax = 131072
+NperDomCell = 5
+NperRefCell = 5
+VescTune = 1.5
+NminPerHalo = 50
+RhoVir = 0
+Dvir = 200
+MaxGatherRad = 10.0
+[TIPSY]
+TIPSY_OMEGA0 = 0.3175
+TIPSY_LAMBDA0 = 0.6825
+TIPSY_BOXSIZE = #
+TIPSY_VUNIT = #
+TIPSY_MUNIT = #
+TIPSY_EUNIT = 0.03

@@ -12,23 +12,15 @@ N_FILE=$(echo "$SNAP / 16" | bc)  # Perform the division and save the result to 
 echo "Directory: $DIR"
 echo "Mass: $MASS"
 echo "Final snapshot number: $SNAP"
+cd $DIR
 
 for ((i=0; i<N_FILE; i++)); do
     INDEX=$(($i + 1))           # Increment i by 1 for correct file numbering
-    INDEX_formatted=$(printf "%05d" $(($INDEX * 16)))  # Format number to 5 digits with leading zeros
-    F_NAME="${DIR}${MASS}.${INDEX_formatted}"    # Construct FILE
+    INDEX_FORMAT=$(printf "%05d" $(($INDEX * 16)))  # Format number to 5 digits with leading zeros
+    F_NAME="${DIR}${MASS}.${INDEX_FORMAT}"    # Construct FILE
     echo "$F_NAME"
+    sed -e "s/SNAPSHOT/$F_NAME/g" AHFinput.in > AHF.input
 
-    # If you have a command to process the files, replace the following line with that command
-    # Example: ./process_simulation $F_NAME
+    #$AHF AHF.input
+
 done
-
-# Under construction, I need to fill the input file first especially the TIPSY info.
-while read snaps; do
-    echo $galaxy/$snaps
-    sed -e "s/GALAXY/$galaxy/g" AHF.input-template > AHF.input
-    sed -i -e "s/SNAPSHOT/$snaps/g" AHF.input
-
-    $AHF AHF.input
-
-done < $current_folder/snapshots.txt
