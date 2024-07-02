@@ -19,7 +19,7 @@ for ((i=0; i<N_FILE; i++)); do
     INDEX_FORMAT=$(printf "%05d" $(($INDEX * 16)))  # Format number to 5 digits with leading zeros
     F_NAME="${DIR}${MASS}.${INDEX_FORMAT}"    # Construct FILE
     echo "$F_NAME"
-    sed -e "s/SNAPSHOT/$F_NAME/g" AHFinput.in > AHF.input
+    sed -i 's/SNAPSHOT/$F_NAME/' AHFinput.in > AHF.input
     cat AHF.input
     #$AHF AHF.input
 
