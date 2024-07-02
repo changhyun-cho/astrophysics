@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Example usage: bash run_ahf.sh /path/to/target/directory/mass.snapshot
+# bash run_ahf.sh /data/cc6881/new_fb_test/bondi/g2.71e12/g2.71e12.01024
+
 AHF=/home/cc6881/bin/AHF
 
 TARGET=$1
@@ -21,5 +24,4 @@ for ((i=0; i<N_FILE; i++)); do
     echo "$F_NAME"
     sed "s#SNAPSHOT#$F_NAME#" AHFinput.in > AHF.input
     $AHF AHF.input
-
 done
