@@ -17,7 +17,7 @@ file="$2"
 echo "$file"
 
 # Copy files in a loop
-cp "${HOME}/director" "${TARGET}/${file}.director
+cp "${HOME}/director" "${TARGET}/${file}.director"  # Fixed the missing closing quote here
 for i in $(seq 2 10); do
     cp "${HOME}/director${i}" "${TARGET}/${file}.director${i}"
 done
