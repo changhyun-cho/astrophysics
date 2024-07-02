@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# Example usage: bash run_ahf.sh /path/to/target/directory/mass.snapshot
+# Example usage: bash run_ahf.sh /path/to/target/directory/last_snapshot
 # bash run_ahf.sh /data/cc6881/new_fb_test/bondi/g2.71e12/g2.71e12.01024
+# Ensure the AHFinput.in is located in the target directory and insert the correct values for
+# TIPSY_BOXSIZE, TIPSY_VUNIT, TIPSY_MUNIT manually.
 
 AHF=/home/cc6881/bin/AHF
 
