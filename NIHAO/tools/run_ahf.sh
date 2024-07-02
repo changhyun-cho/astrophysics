@@ -20,7 +20,7 @@ for ((i=0; i<N_FILE; i++)); do
     F_NAME="${DIR}${MASS}.${INDEX_FORMAT}"    # Construct FILE
     echo "$F_NAME"
     sed -e "s/SNAPSHOT/$F_NAME/g" AHFinput.in > AHF.input
-
+    cat AHF.input
     #$AHF AHF.input
 
 done
