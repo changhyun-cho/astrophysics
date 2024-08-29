@@ -1,0 +1,17 @@
+size 1920 1080
+clip 0.01 2
+render tsc
+target photogenic
+encode png
+bExpansion 1
+file movie/dmcosmo/a
+project perspective
+gas off
+star off
+softdark 0.4
+colbyproperty dark density 2 5
+colormap dark test 2
+FOV 30
+#face on
+up  0 1 0
+eye 0 0 0.1
