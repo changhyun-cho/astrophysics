@@ -243,27 +243,28 @@ class analyzeHELLO:
         print("Analysis completed.")
 
     def readData(self):
-        outfile = self.dir + self.m_sim + ".csv"
-        if os.path.isfile(outfile):
+        self.outfile = self.dir + self.m_sim + ".csv"
+        if os.path.isfile(self.outfile):
             # self.dir+self.m_sim+'.csv' #self.outdir+self.m_sim+'.csv'
             print("Data file found! I will read it.")
-            self.df = pd.read_csv(outfile)
+            self.df = pd.read_csv(self.outfile)
             # self.dir+self.m_sim+'.csv' #self.outdir+self.m_sim+'.csv'
         else:
             print("Since there is no data file, I will read the snapshots.")
             self.generateData()
 
-    def saveData(self):
-        self.df.to_csv(
-            self.dir + self.m_sim + ".csv",
-            index=False
-            # self.dir+self.m_sim+'.csv',index=False
-            ##self.outdir+self.m_sim+'.csv',index=False
-        )
+    def saveData(self, outdir=None):
 
-        print(
-            f"Saving data at {self.dir}{self.m_sim}.csv"
-        )  # self.dir+self.m_sim+'.csv' #self.outdir+self.m_sim+'.csv'
+        # If outdir is provided, use it; otherwise, use self.dir
+        self.target_dir = outdir if outdir else self.dir
+
+        # Construct the full file path
+        self.file_path = os.path.join(self.target_dir, self.m_sim + ".csv")
+
+        # Save the DataFrame to the specified file path
+        self.df.to_csv(self.file_path, index=False)
+
+        print(f"Saving data at {self.file_path}.csv")
 
 
 def visual_hello(*args):
