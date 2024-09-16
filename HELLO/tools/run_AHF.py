@@ -30,6 +30,18 @@ if __name__ == "__main__":
     # run_AHF(last_file)
 
     files = (
+        "/data/cc6881/new_fb_test/parameter_test/g2.71e12_0.1_0.005/g2.71e12.01024",
+        "/data/cc6881/new_fb_test/parameter_test/g2.71e12_0.1_0.001/g2.71e12.01024",
+        "/data/cc6881/new_fb_test/parameter_test/g2.71e12_0.05_0.001/g2.71e12.01024",
+        "/data/cc6881/new_fb_test/parameter_test/g2.71e12_0.05_0.005/g2.71e12.01024",
+        "/data/cc6881/new_fb_test/parameter_test/g1.05e13_0.05_0.01/g1.05e13.01024",
+        "/data/cc6881/new_fb_test/parameter_test/g1.05e13_0.05_0.05/g1.05e13.01024",
+        "/data/cc6881/new_fb_test/parameter_test/g1.05e13_0.1_0.01/g1.05e13.01024",
+        "/data/cc6881/new_fb_test/parameter_test/g1.05e13_0.1_0.05/g1.05e13.01024",
+        "/data/cc6881/new_fb_test/parameter_test/g3.89e13_0.05_0.01/g3.89e13.01024",
+        "/data/cc6881/new_fb_test/parameter_test/g3.89e13_0.05_0.05/g3.89e13.01024",
+        "/data/cc6881/new_fb_test/parameter_test/g3.89e13_0.1_0.01/g3.89e13.01024",
+        "/data/cc6881/new_fb_test/parameter_test/g3.89e13_0.1_0.05/g3.89e13.01024",
         # "/data/cc6881/output_NIHAO/agn/g2.71e12.01024",
         "/data/cc6881/new_fb_test/bondi/g2.71e12/g2.71e12.01024",
         "/data/cc6881/new_fb_test/alpha/g2.71e12/g2.71e12.01024",
