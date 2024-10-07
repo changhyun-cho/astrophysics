@@ -30,6 +30,10 @@ if __name__ == "__main__":
     # run_AHF(last_file)
 
     files = (
+        "/data/cc6881/new_fb_test/parameter_test/hello/g2.75e12_0.1_0.005/g2.75e12.01024",
+        "/data/cc6881/new_fb_test/parameter_test/hello/g2.75e12_0.05_0.005/g2.75e12.01024",
+        "/data/cc6881/new_fb_test/parameter_test/hello/g2.83e12_0.1_0.005/g2.83e12.01024",
+        "/data/cc6881/new_fb_test/parameter_test/hello/g2.83e12_0.05_0.005/g2.83e12.01024",
         "/data/cc6881/new_fb_test/parameter_test/g2.71e12_0.1_0.005/g2.71e12.01024",
         "/data/cc6881/new_fb_test/parameter_test/g2.71e12_0.1_0.001/g2.71e12.01024",
         "/data/cc6881/new_fb_test/parameter_test/g2.71e12_0.05_0.001/g2.71e12.01024",
