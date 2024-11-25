@@ -30,6 +30,22 @@ if __name__ == "__main__":
     # run_AHF(last_file)
 
     files = (
+        "/data/cc6881/new_fb_test/parameter_test/g1.05e13_0.1/g1.05e13.01024",
+        "/data/cc6881/new_fb_test/parameter_test/g1.05e13_0.05/g1.05e13.01024",
+        "/data/cc6881/new_fb_test/parameter_test/g3.26e13_0.1/g3.26e13.01024",
+        "/data/cc6881/new_fb_test/parameter_test/g3.26e13_0.05/g3.26e13.01024",
+        "/data/cc6881/new_fb_test/parameter_test/g7.92e12_0.1/g7.92e12.01024",
+        "/data/cc6881/new_fb_test/parameter_test/g7.92e12_0.05/g7.92e12.01024",
+        "/data/cc6881/new_fb_test/parameter_test/g8.26e11_0.1/g8.26e11.01024",
+        "/data/cc6881/new_fb_test/parameter_test/g8.26e11_0.05/g8.26e11.01024",
+        "/data/cc6881/new_fb_test/parameter_test/isothermal/g8.26e11/g8.26e11.01024",
+        "/data/cc6881/new_fb_test/parameter_test/isothermal/g1.05e13/g1.05e13.01024",
+        "/data/cc6881/new_fb_test/parameter_test/isothermal/g2.37e13/g2.37e13.01024",
+        "/data/cc6881/new_fb_test/parameter_test/isothermal/g2.71e12/g2.71e12.01024",
+        "/data/cc6881/new_fb_test/parameter_test/isothermal/g7.92e12/g7.92e12.01024",
+        "/data/cc6881/new_fb_test/parameter_test/isothermal/hello/g2.71e12/g2.71e12.00240",
+        "/data/cc6881/new_fb_test/parameter_test/isothermal/hello/g2.75e12/g2.75e12.00240",
+        "/data/cc6881/new_fb_test/parameter_test/isothermal/hello/g2.83e12/g2.83e12.00240",
         "/data/cc6881/new_fb_test/parameter_test/hello/g2.75e12_0.1_0.005/g2.75e12.01024",
         "/data/cc6881/new_fb_test/parameter_test/hello/g2.75e12_0.05_0.005/g2.75e12.01024",
         "/data/cc6881/new_fb_test/parameter_test/hello/g2.83e12_0.1_0.005/g2.83e12.01024",
