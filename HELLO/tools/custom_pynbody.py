@@ -312,7 +312,7 @@ class analyzeHELLO:
         # Save the DataFrame to the specified file path
         self.df.to_csv(self.file_path, index=False)
 
-        print(f"Saving data at {self.file_path}.csv")
+        print(f"Saving data at {self.file_path}")
 
 
 def visual_hello(*args):
