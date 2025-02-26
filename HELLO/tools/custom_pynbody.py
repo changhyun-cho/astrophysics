@@ -61,6 +61,8 @@ class analyzeHELLO:
             "m_g",
             "m_g_hot",
             "m_g_cold",
+            "m_g_HI",
+            "m_g_HeI",
             "mdot",
             "mdotedd",
             "n_s",
@@ -69,6 +71,16 @@ class analyzeHELLO:
             # "v_disp_595",
             "n_bh",
             "n_dm",
+            "lum_u",
+            "lum_b",
+            "lum_v",
+            "lum_r",
+            "lum_i",
+            "mag_u",
+            "mag_b",
+            "mag_v",
+            "mag_r",
+            "mag_i",
         ]
         # Initialize DataFrame with zeros for each column
         self.df = pd.DataFrame({column: np.zeros(self.n_file) for column in self.dt})
@@ -193,6 +205,12 @@ class analyzeHELLO:
                 self.df["m_g_hot"][i] = np.sum(
                     self.h[1].gas[self.hot]["mass"].in_units("Msol")
                 )
+                self.df["m_g_HI"][i] = np.sum(
+                    self.h[1].gas["mass"].in_units("Msol") * self.h[1].gas["HI"]
+                )
+                self.df["m_g_HeI"][i] = np.sum(
+                    self.h[1].gas["mass"].in_units("Msol") * self.h[1].gas["HeI"]
+                )
                 self.df["m_s"][i] = np.sum(self.h[1].star["mass"].in_units("Msol"))
                 self.df["m_dm"][i] = np.sum(self.h[1].d["mass"].in_units("Msol"))
                 self.df["n_g"][i] = len(self.h[1].gas)
@@ -205,6 +223,36 @@ class analyzeHELLO:
                     1.0e-9
                     * np.sum(self.h[1].g[self.one]["mass"].in_units("Msol"))
                     / ((4.0 / 3.0) * np.pi)
+                )
+                self.df["lum_u"][i] = float(
+                    pynbody.analysis.luminosity.halo_lum(self.h[1].s, band="u")
+                )
+                self.df["lum_b"][i] = float(
+                    pynbody.analysis.luminosity.halo_lum(self.h[1].s, band="b")
+                )
+                self.df["lum_v"][i] = float(
+                    pynbody.analysis.luminosity.halo_lum(self.h[1].s, band="v")
+                )
+                self.df["lum_r"][i] = float(
+                    pynbody.analysis.luminosity.halo_lum(self.h[1].s, band="r")
+                )
+                self.df["lum_i"][i] = float(
+                    pynbody.analysis.luminosity.halo_lum(self.h[1].s, band="i")
+                )
+                self.df["mag_u"][i] = float(
+                    pynbody.analysis.luminosity.halo_mag(self.h[1].s, band="u")
+                )
+                self.df["mag_b"][i] = float(
+                    pynbody.analysis.luminosity.halo_mag(self.h[1].s, band="b")
+                )
+                self.df["mag_v"][i] = float(
+                    pynbody.analysis.luminosity.halo_mag(self.h[1].s, band="v")
+                )
+                self.df["mag_r"][i] = float(
+                    pynbody.analysis.luminosity.halo_mag(self.h[1].s, band="r")
+                )
+                self.df["mag_i"][i] = float(
+                    pynbody.analysis.luminosity.halo_mag(self.h[1].s, band="i")
                 )
 
                 try:
